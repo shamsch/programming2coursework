@@ -7,7 +7,7 @@ int main()
 {
     int number;
     cout << "Enter a positive number: ";
-    cin>> number1;
+    cin>> number;
     if (number>=0){
         int squareRoot = sqrt(number);
         while(number%squareRoot!=0){
