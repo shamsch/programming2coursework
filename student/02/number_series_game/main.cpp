@@ -8,6 +8,21 @@ int main()
     int number;
     cin >> number;
     for(int i=1;i<=number;i++){
-        cout<<i<<endl;
+        if (i%3==0 && i%7==0)
+        {
+            cout<<"zip boing"<<endl;
+        }
+        else if (i%7==0)
+        {
+            cout<<"boing"<<endl;
+        }
+         else if (i%3==0)
+        {
+            cout<<"zip"<<endl;
+        }
+        
+        else{
+            cout<<i<<endl;
+        }
     }
 }
