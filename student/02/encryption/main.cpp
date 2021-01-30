@@ -12,7 +12,7 @@ int stringScore(string abc){
         int val = int(a);
         sum=sum+val;
     }
-    //2847
+    //2847 this is something
     if(sum==2847){
         return 0;
     }
