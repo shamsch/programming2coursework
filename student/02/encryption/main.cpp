@@ -33,7 +33,6 @@ int checkNumberofCharcters(string abc){
 
 int allSmallCase(string abc){
     int len = abc.length();
-    int sum=0;
     for(int i=0;i<len;i++){
         char a= abc.at(i);
         if (isupper(a)){
