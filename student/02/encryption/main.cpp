@@ -61,7 +61,8 @@ int main(){
     }
     cout<<"Enter the text to be encrypted: ";
     cin>>text;
-    for(int i=0; i<text.length(); i++){
+    int lengthOfText=text.length();
+    for(int i=0; i<lengthOfText; i++){
         char temp = text.at(i);
         int asciiCode= int(temp);
         int positionOnTheString= asciiCode-97;
