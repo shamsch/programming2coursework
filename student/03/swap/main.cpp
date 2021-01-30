@@ -2,7 +2,11 @@
 #include <iostream>
 
 // Write your swap function here.
-
+void swap(int& a, int& b){
+    int temp =a;
+    a= b;
+    b=temp;
+}
 
 
 #ifndef UNIT_TESTING
