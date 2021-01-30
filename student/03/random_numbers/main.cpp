@@ -5,8 +5,30 @@
 using namespace std;
 
 void produce_random_numbers(unsigned int lower, unsigned int upper)
-{
-    // Implement your function here
+{   
+    int seedValue;
+    char consent=' ';
+    cout<<"Enter a seed value: ";
+    cin>>seedValue;
+    default_random_engine gen(seedValue);
+    uniform_int_distribution<int> distr(lower, upper);
+    while (true)
+    {
+        std::cout<<endl;
+        std::cout <<"Your drawn random number is "<<distr(gen) << std::endl;
+        std::cout<<"Press c to continue or q to quit: ";
+        cin>>consent;
+        if (consent=='q')
+        {
+            break;
+        }
+        else{
+            continue;
+        }
+        
+    }
+    
+    
 }
 
 int main()
