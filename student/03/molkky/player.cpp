@@ -13,10 +13,11 @@ string Player::get_name() const{
 }
 
 void Player::add_points(int pts){
-    if (points_>50){
-        points_-=25;
-    }
     points_+=pts;
+    if (points_>50){
+        points_=25;
+        cout<<playerName_<<" gets penalty points!"<<endl;
+    }
 }
 
 bool Player::has_won(){
