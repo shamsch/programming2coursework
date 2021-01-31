@@ -1,6 +1,6 @@
 *.exe
 *.pro.user
-*/build-*
+build-*
 templates/*
 examples/*
 *.env
