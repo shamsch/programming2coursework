@@ -1,7 +1,7 @@
-#include "player.hh"
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include "player.hh"
 
 
 int main()
@@ -11,8 +11,7 @@ int main()
     Player* in_turn = 0;
 
     int turn = 1;
-    while (true)
-    {
+    while (true){
         if (turn % 2 != 0)
         {
             in_turn = &player1;
