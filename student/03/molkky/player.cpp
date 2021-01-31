@@ -13,12 +13,18 @@ string Player::get_name() const{
 }
 
 void Player::add_points(int pts){
+    if (points_>50){
+        points_-=25
+    }
     points_+=pts;
 }
 
 bool Player::has_won(){
     if(points_==50){
         won_= true;
+    }
+    else{
+        won_=false;
     }
     return won_;
 }
