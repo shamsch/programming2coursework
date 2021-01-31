@@ -14,7 +14,7 @@ string Player::get_name() const{
 
 void Player::add_points(int pts){
     if (points_>50){
-        points_-=25
+        points_-=25;
     }
     points_+=pts;
 }
