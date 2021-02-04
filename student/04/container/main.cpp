@@ -63,6 +63,9 @@ bool is_arithmetic_series(const std::vector< int > ints){
 
 }
 bool is_geometric_series(const std::vector< int > ints){
+    if(is_arithmetic_series(ints)){
+        return false;
+    }
     bool geo = true;
     int rat=0;
     rat= (ints.at(1))/(ints.at(0));
