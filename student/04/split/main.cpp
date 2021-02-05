@@ -2,10 +2,60 @@
 #include <string>
 #include <vector>
 
-
 // TODO: Implement split function here
 // Do not change main function
 
+std::vector<std::string> split(std::string line, char sep, bool ignore = false)
+{
+    std::string temp="";
+    std::vector<std::string> vectorResult;
+    int count=0;
+    if (ignore)
+    {
+        for(std::string::size_type i= 0; i<line.length(); i++){
+            if(line[i]==sep){
+                if (temp != ""){
+                    vectorResult.push_back(temp);
+                    temp="";
+                }
+            }
+            else if (i==line.length()-1 && temp !=""){
+                vectorResult.push_back(temp);
+            }
+            else{
+                temp=temp+line[i];
+            }
+        }
+    }
+    else
+    {
+        for(std::string::size_type i= 0; i<line.length(); i++){
+            if(line[i]==sep){
+                if (temp!="")
+                {
+                    vectorResult.push_back(temp);
+                    temp="";
+                }
+                count+=1;
+                if (count>1)
+                {
+                    vectorResult.push_back(" ");
+                }
+                
+            }
+            else if (i==line.length()-1 && temp !=""){
+                vectorResult.push_back(temp);
+                }
+            else{
+                temp+=line[i];
+                count=0;
+            }
+        }
+        
+    }
+
+    return vectorResult;
+}
 
 int main()
 {
@@ -15,15 +65,17 @@ int main()
     std::cout << "Enter the separator character: ";
     char separator = getchar();
 
-    std::vector< std::string > parts  = split(line, separator);
+    std::vector<std::string> parts = split(line, separator);
     std::cout << "Splitted string including empty parts: " << std::endl;
-    for( auto part : parts ) {
+    for (auto part : parts)
+    {
         std::cout << part << std::endl;
     }
 
-    std::vector< std::string > parts_no_empty  = split(line, separator, true);
+    std::vector<std::string> parts_no_empty = split(line, separator, true);
     std::cout << "Splitted string ignoring empty parts: " << std::endl;
-    for( auto part : parts_no_empty ) {
+    for (auto part : parts_no_empty)
+    {
         std::cout << part << std::endl;
     }
 }
