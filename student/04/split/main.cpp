@@ -62,6 +62,9 @@ std::vector<std::string> split(std::string line, char sep, bool ignore = false)
         {
             vectorResult.push_back(temp);
         }
+        if (count!=0){
+            vectorResult.push_back(" ");
+        }
     }
 
     return vectorResult;
