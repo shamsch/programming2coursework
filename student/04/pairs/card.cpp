@@ -1,3 +1,11 @@
+/*
+Program author ( Fill with your own info )
+ * Name: Shamsur Raza Chowdhury
+ * Student number:050359798
+ * UserID: rvshch 
+ * E-Mail: shamsurraza.chowdhury@tuni.fi
+*/
+
 #include "card.hh"
 #include <iostream>
 
@@ -51,8 +59,18 @@ void Card::turn()
 
 void Card::print() const
 {
-    // Kirjoita toteutus tähän
     // Write implementation here
+    if (visibility_ == OPEN)
+    {
+        std::cout<<letter_;
+    }
+    else if (visibility_ == HIDDEN){
+        std::cout<<HIDDEN_CHAR;
+    }
+    else{
+        std::cout<<EMPTY_CHAR;
+    }
+    
 }
 
 void Card::remove_from_game_board()
