@@ -221,7 +221,26 @@ void ask_product_and_calculate_factors(unsigned int& smaller_factor, unsigned in
     bigger_factor = product / smaller_factor;
 }
 
-// More functions
+// Self-made functions
+
+void convert_string_to_strVector(vector<string>& x, string y){
+        string add= "";
+        for(string::size_type i=0; i<y.length();i++){
+            if (y[i]==' ')
+            {
+                x.push_back(add);
+                add="";
+            }
+            else{
+                add+=y[i];
+            }
+        }
+
+        if(add!=""){
+           x.push_back(add);
+        }
+
+}
 
 void askNumberAndNameOfPlayer( vector<Player>& playerVect){
     vector<string> nameOfThePlayers;
@@ -234,7 +253,6 @@ void askNumberAndNameOfPlayer( vector<Player>& playerVect){
         numberOfPlayer=stoi_with_check(temp);
     }
 
-    
     nameOfThePlayers.clear();
     string temp="";
     bool condition= true;
@@ -242,22 +260,8 @@ void askNumberAndNameOfPlayer( vector<Player>& playerVect){
     {
         cout<<"List "<<numberOfPlayer<<" players: ";
         getline(cin,temp);
-        string add= "";
-        for(string::size_type i=0; i<temp.length();i++){
-            if (temp[i]==' ')
-            {
-                nameOfThePlayers.push_back(add);
-                add="";
-            }
-            else{
-                add+=temp[i];
-            }
-        }
-        
-        if(add!=""){
-            nameOfThePlayers.push_back(add);
-        }
-
+        // this part will be made into a function later
+        convert_string_to_strVector(nameOfThePlayers, temp);
         if(nameOfThePlayers.size()>=numberOfPlayer){
             condition=false;
         }
@@ -269,6 +273,73 @@ void askNumberAndNameOfPlayer( vector<Player>& playerVect){
         playerVect.push_back(adding);
     }
     
+}
+
+void inputCard(unsigned int& x1,unsigned int& x2, unsigned int& y1, unsigned int &y2, bool& quit, vector<Player>& players,unsigned int& nowPlaying,unsigned int& row, unsigned int& column){
+    string playerInTurn= players.at(nowPlaying).get_name();
+    quit= false;
+    x1=0;
+    x2=0;
+    y1=0;
+    y2=0;
+    vector<unsigned int> keepTheCoordinate; 
+    string inputCordinate="";
+    cout<<playerInTurn<<": "<<INPUT_CARDS;
+    getline(cin, inputCordinate);
+    keepTheCoordinate.clear();
+    if(inputCordinate=="q"){
+        quit= true;
+    }
+    else{
+        string temp="";
+        unsigned int num= 0;
+        for(string::size_type i=0;i<inputCordinate.length(); ++i){
+            if(inputCordinate[i]==' '){
+                num = stoi_with_check(temp);
+                keepTheCoordinate.push_back(num);
+                temp="";
+            }
+            else{
+                temp+=inputCordinate[i];
+            }
+        }
+        if(temp!=""){
+            num = stoi_with_check(temp);
+            keepTheCoordinate.push_back(num);
+            temp="";
+        }
+    }
+
+    bool condition = (keepTheCoordinate.at(0)!= keepTheCoordinate.at(2)) && (keepTheCoordinate.at(1)!= keepTheCoordinate.at(3)) && (keepTheCoordinate.at(0)>0) && (keepTheCoordinate.at(1)>0) && (keepTheCoordinate.at(2)>0) && (keepTheCoordinate.at(3)>0) && (keepTheCoordinate.at(0)<=column) && (keepTheCoordinate.at(2)<=column) && (keepTheCoordinate.at(1)<=row) && (keepTheCoordinate.at(3)<=row);
+    if (!quit && keepTheCoordinate.size()==4){
+        if(condition){
+            x1= keepTheCoordinate.at(0);
+            x2= keepTheCoordinate.at(2);
+            y1= keepTheCoordinate.at(1);
+            y2= keepTheCoordinate.at(3);
+        }
+        else{
+            cout<<INVALID_CARD<<endl;
+        }
+        
+    }
+    else if(keepTheCoordinate.size()!=4){
+        cout<<INVALID_CARD<<endl;
+    }
+}
+
+void turnCard(vector<Player>& players, Game_board_type& gameBoard, bool& quitStatus){
+    unsigned int x1,x2,y1,y2,rows,columns, whoseTurn, numberOfPlayers;
+    static unsigned int turnCounter= 0;
+    char letter_1, letter_2;
+    rows= gameBoard.size();
+    if(rows>0){
+        columns= gameBoard.at(0).size();
+    }
+    numberOfPlayers= players.size();
+    whoseTurn= turnCounter%numberOfPlayers;
+    inputCard(x1,x2,y1,y2,quitStatus, players, whoseTurn, rows, columns);
+
 }
 
 int main()
@@ -288,6 +359,7 @@ int main()
     init_with_cards(game_board, seed);
 
     // More code
+    bool quitStatus= false;
     askNumberAndNameOfPlayer(playerVect);
     print(game_board);
 
