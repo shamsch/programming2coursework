@@ -29,8 +29,6 @@
  *
  * */
 
-
-
 #include <iostream>
 #include <vector>
 #include <random>
@@ -56,18 +54,18 @@ using Game_board_type = vector<vector<Card>>;
 // (by calling stoi).
 // If the given string is not numeric, returns 0
 // (which leads to an invalid card later).
-unsigned int stoi_with_check(const string& str)
+unsigned int stoi_with_check(const string &str)
 {
     bool is_numeric = true;
-    for(unsigned int i = 0; i < str.length(); ++i)
+    for (unsigned int i = 0; i < str.length(); ++i)
     {
-        if(not isdigit(str.at(i)))
+        if (not isdigit(str.at(i)))
         {
             is_numeric = false;
             break;
         }
     }
-    if(is_numeric)
+    if (is_numeric)
     {
         return stoi(str);
     }
@@ -78,16 +76,16 @@ unsigned int stoi_with_check(const string& str)
 }
 
 // Fills the game board, the size of which is rows * columns, with empty cards.
-void init_with_empties(Game_board_type& g_board, unsigned int rows, unsigned int columns)
+void init_with_empties(Game_board_type &g_board, unsigned int rows, unsigned int columns)
 {
     g_board.clear();
     Game_row_type row;
-    for(unsigned int i = 0; i < columns; ++i)
+    for (unsigned int i = 0; i < columns; ++i)
     {
         Card card;
         row.push_back(card);
     }
-    for(unsigned int i = 0; i < rows; ++i)
+    for (unsigned int i = 0; i < rows; ++i)
     {
         g_board.push_back(row);
     }
@@ -96,25 +94,25 @@ void init_with_empties(Game_board_type& g_board, unsigned int rows, unsigned int
 // Finds the next free position in the game board (g_board), starting from the
 // given position start and continuing from the beginning if needed.
 // (Called only by the function init_with_cards.)
-unsigned int next_free(Game_board_type& g_board, unsigned int start)
+unsigned int next_free(Game_board_type &g_board, unsigned int start)
 {
     // Finding out the number of rows and columns of the game board
     unsigned int rows = g_board.size();
     unsigned int columns = g_board.at(0).size();
 
     // Starting from the given value
-    for(unsigned int i = start; i < rows * columns; ++i)
+    for (unsigned int i = start; i < rows * columns; ++i)
     {
-        if(g_board.at(i / columns).at(i % columns).get_visibility() == EMPTY) // vaihdettu
+        if (g_board.at(i / columns).at(i % columns).get_visibility() == EMPTY) // vaihdettu
         {
             return i;
         }
     }
 
     // Continuing from the beginning
-    for(unsigned int i = 0; i < start; ++i)
+    for (unsigned int i = 0; i < start; ++i)
     {
-        if(g_board.at(i / columns).at(i % columns).get_visibility() == EMPTY)
+        if (g_board.at(i / columns).at(i % columns).get_visibility() == EMPTY)
         {
             return i;
         }
@@ -126,12 +124,11 @@ unsigned int next_free(Game_board_type& g_board, unsigned int start)
 
 // Initializes the given game board (g_board) with randomly generated cards,
 // based on the given seed value.
-void init_with_cards(Game_board_type& g_board, int seed)
+void init_with_cards(Game_board_type &g_board, int seed)
 {
     // Finding out the number of rows and columns of the game board
     unsigned int rows = g_board.size();
     unsigned int columns = g_board.at(0).size();
-
 
     // Drawing a cell to be filled
     std::default_random_engine randomEng(seed);
@@ -142,11 +139,11 @@ void init_with_cards(Game_board_type& g_board, int seed)
 
     // If the drawn cell is already filled with a card, next empty cell will be used.
     // (The next empty cell is searched for circularly, see function next_free.)
-    for(unsigned int i = 0, c = 'A'; i < rows * columns - 1; i += 2, ++c)
+    for (unsigned int i = 0, c = 'A'; i < rows * columns - 1; i += 2, ++c)
     {
 
         // Adding two identical cards (pairs) in the game board
-        for(unsigned int j = 0; j < 2; ++j)
+        for (unsigned int j = 0; j < 2; ++j)
         {
             unsigned int cell = distr(randomEng);
             cell = next_free(g_board, cell);
@@ -156,22 +153,20 @@ void init_with_cards(Game_board_type& g_board, int seed)
     }
 }
 
-
 // Prints a line consisting of the given character c.
 // The length of the line is given in the parameter line_length.
 // (Called only by the function print.)
 void print_line_with_char(char c, unsigned int line_length)
 {
-    for(unsigned int i = 0; i < line_length * 2 + 7; ++i)
+    for (unsigned int i = 0; i < line_length * 2 + 7; ++i)
     {
         cout << c;
     }
     cout << endl;
 }
 
-
 // Prints a variable-length game board with borders.
-void print(const Game_board_type& g_board)
+void print(const Game_board_type &g_board)
 {
     // Finding out the number of rows and columns of the game board
     unsigned int rows = g_board.size();
@@ -179,16 +174,16 @@ void print(const Game_board_type& g_board)
 
     print_line_with_char('=', columns);
     cout << "|   | ";
-    for(unsigned int i = 0; i < columns; ++i)
+    for (unsigned int i = 0; i < columns; ++i)
     {
         cout << i + 1 << " ";
     }
     cout << "|" << endl;
     print_line_with_char('-', columns);
-    for(unsigned int i = 0; i < rows; ++i)
+    for (unsigned int i = 0; i < rows; ++i)
     {
         cout << "| " << i + 1 << " | ";
-        for(unsigned int j = 0; j < columns; ++j)
+        for (unsigned int j = 0; j < columns; ++j)
         {
             g_board.at(i).at(j).print();
             cout << " ";
@@ -200,10 +195,10 @@ void print(const Game_board_type& g_board)
 
 // Asks the desired product from the user, and calculates the factors of
 // the product such that the factor as near to each other as possible.
-void ask_product_and_calculate_factors(unsigned int& smaller_factor, unsigned int& bigger_factor)
+void ask_product_and_calculate_factors(unsigned int &smaller_factor, unsigned int &bigger_factor)
 {
     unsigned int product = 0;
-    while(not (product > 0 and product % 2 == 0))
+    while (not(product > 0 and product % 2 == 0))
     {
         std::cout << INPUT_AMOUNT_OF_CARDS;
         string product_str = "";
@@ -211,9 +206,9 @@ void ask_product_and_calculate_factors(unsigned int& smaller_factor, unsigned in
         product = stoi_with_check(product_str);
     }
 
-    for(unsigned int i = 1; i * i <= product; ++i)
+    for (unsigned int i = 1; i * i <= product; ++i)
     {
-        if(product % i == 0)
+        if (product % i == 0)
         {
             smaller_factor = i;
         }
@@ -223,146 +218,203 @@ void ask_product_and_calculate_factors(unsigned int& smaller_factor, unsigned in
 
 // Self-made functions
 
-void convert_string_to_strVector(vector<string>& x, string y){
-        string add= "";
-        for(string::size_type i=0; i<y.length();i++){
-            if (y[i]==' ')
-            {
-                x.push_back(add);
-                add="";
-            }
-            else{
-                add+=y[i];
-            }
+void convert_string_to_strVector(vector<string> &x, string y)
+{
+    string add = "";
+    for (string::size_type i = 0; i < y.length(); i++)
+    {
+        if (y[i] == ' ')
+        {
+            x.push_back(add);
+            add = "";
         }
-
-        if(add!=""){
-           x.push_back(add);
+        else
+        {
+            add += y[i];
         }
+    }
 
+    if (add != "")
+    {
+        x.push_back(add);
+    }
 }
 
-void askNumberAndNameOfPlayer( vector<Player>& playerVect){
+void askNumberAndNameOfPlayer(vector<Player> &playerVect)
+{
     vector<string> nameOfThePlayers;
-    unsigned int numberOfPlayer=0;
-    while (numberOfPlayer<1)
+    unsigned int numberOfPlayer = 0;
+    while (numberOfPlayer < 1)
     {
-        cout<<INPUT_AMOUNT_OF_PLAYERS;
+        cout << INPUT_AMOUNT_OF_PLAYERS;
         string temp;
         getline(cin, temp);
-        numberOfPlayer=stoi_with_check(temp);
+        numberOfPlayer = stoi_with_check(temp);
     }
 
     nameOfThePlayers.clear();
-    string temp="";
-    bool condition= true;
+    string temp = "";
+    bool condition = true;
     while (condition)
     {
-        cout<<"List "<<numberOfPlayer<<" players: ";
-        getline(cin,temp);
+        cout << "List " << numberOfPlayer << " players: ";
+        getline(cin, temp);
         // this part will be made into a function later
         convert_string_to_strVector(nameOfThePlayers, temp);
-        if(nameOfThePlayers.size()>=numberOfPlayer){
-            condition=false;
+        if (nameOfThePlayers.size() >= numberOfPlayer)
+        {
+            condition = false;
         }
     }
 
     playerVect.clear();
-    for(auto i: nameOfThePlayers){
+    for (auto i : nameOfThePlayers)
+    {
         Player adding(i);
         playerVect.push_back(adding);
     }
-    
 }
 
-void inputCard(unsigned int& x1,unsigned int& x2, unsigned int& y1, unsigned int &y2, bool& quit, vector<Player>& players,unsigned int& nowPlaying,unsigned int& row, unsigned int& column){
-    string playerInTurn= players.at(nowPlaying).get_name();
-    quit= false;
-    x1=0;
-    x2=0;
-    y1=0;
-    y2=0;
-    vector<unsigned int> keepTheCoordinate; 
-    string inputCordinate="";
-    cout<<playerInTurn<<": "<<INPUT_CARDS;
+void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned int &y2, bool &quit, vector<Player> &players, unsigned int &nowPlaying, unsigned int &row, unsigned int &column)
+{
+    string playerInTurn = players.at(nowPlaying).get_name();
+    quit = false;
+    x1 = 0;
+    x2 = 0;
+    y1 = 0;
+    y2 = 0;
+    vector<unsigned int> keepTheCoordinate;
+    string inputCordinate = "";
+    cout << playerInTurn << ": " << INPUT_CARDS;
     getline(cin, inputCordinate);
     keepTheCoordinate.clear();
-    if(inputCordinate=="q"){
-        quit= true;
+    if (inputCordinate == "q")
+    {
+        quit = true;
     }
-    else{
-        string temp="";
-        unsigned int num= 0;
-        for(string::size_type i=0;i<inputCordinate.length(); ++i){
-            if(inputCordinate[i]==' '){
+    else
+    {
+        string temp = "";
+        unsigned int num = 0;
+        for (string::size_type i = 0; i < inputCordinate.length(); ++i)
+        {
+            if (inputCordinate[i] == ' ')
+            {
                 num = stoi_with_check(temp);
                 keepTheCoordinate.push_back(num);
-                temp="";
+                temp = "";
             }
-            else{
-                temp+=inputCordinate[i];
+            else
+            {
+                temp += inputCordinate[i];
             }
         }
-        if(temp!=""){
+        if (temp != "")
+        {
             num = stoi_with_check(temp);
             keepTheCoordinate.push_back(num);
-            temp="";
+            temp = "";
         }
     }
 
-    bool condition = (keepTheCoordinate.at(0)!= keepTheCoordinate.at(2)) && (keepTheCoordinate.at(1)!= keepTheCoordinate.at(3)) && (keepTheCoordinate.at(0)>0) && (keepTheCoordinate.at(1)>0) && (keepTheCoordinate.at(2)>0) && (keepTheCoordinate.at(3)>0) && (keepTheCoordinate.at(0)<=column) && (keepTheCoordinate.at(2)<=column) && (keepTheCoordinate.at(1)<=row) && (keepTheCoordinate.at(3)<=row);
-    if (!quit && keepTheCoordinate.size()==4){
-        if(condition){
-            x1= keepTheCoordinate.at(0);
-            x2= keepTheCoordinate.at(2);
-            y1= keepTheCoordinate.at(1);
-            y2= keepTheCoordinate.at(3);
+    bool condition = ((keepTheCoordinate.at(0) != keepTheCoordinate.at(2)) || (keepTheCoordinate.at(1) != keepTheCoordinate.at(3))) && (keepTheCoordinate.at(0) > 0) && (keepTheCoordinate.at(1) > 0) && (keepTheCoordinate.at(2) > 0) && (keepTheCoordinate.at(3) > 0) && (keepTheCoordinate.at(0) <= column) && (keepTheCoordinate.at(2) <= column) && (keepTheCoordinate.at(1) <= row) && (keepTheCoordinate.at(3) <= row);
+    if (!quit && keepTheCoordinate.size() == 4)
+    {
+        if (condition)
+        {
+            x1 = keepTheCoordinate.at(0);
+            x2 = keepTheCoordinate.at(2);
+            y1 = keepTheCoordinate.at(1);
+            y2 = keepTheCoordinate.at(3);
         }
-        else{
-            cout<<INVALID_CARD<<endl;
+        else
+        {
+            cout << INVALID_CARD << endl;
         }
-        
     }
-    else if(keepTheCoordinate.size()!=4){
-        cout<<INVALID_CARD<<endl;
+    else if (keepTheCoordinate.size() != 4)
+    {
+        cout << INVALID_CARD << endl;
     }
 }
 
-void turnCard(vector<Player>& players, Game_board_type& gameBoard, bool& quitStatus){
-    unsigned int x1,x2,y1,y2,rows,columns, whoseTurn, numberOfPlayers;
-    static unsigned int turnCounter= 0;
-    char letter_1, letter_2;
-    rows= gameBoard.size();
-    if(rows>0){
-        columns= gameBoard.at(0).size();
-    }
-    numberOfPlayers= players.size();
-    whoseTurn= turnCounter%numberOfPlayers;
-    inputCard(x1,x2,y1,y2,quitStatus, players, whoseTurn, rows, columns);
-
-}
-
-int main()
+void turnCard(vector<Player> &players, Game_board_type &gameBoard, bool &quitStatus)
 {
-    Game_board_type game_board;
-    vector<Player> playerVect;
-
-    unsigned int factor1 = 1;
-    unsigned int factor2 = 1;
-    ask_product_and_calculate_factors(factor1, factor2);
-    init_with_empties(game_board, factor1, factor2);
-
-    string seed_str = "";
-    std::cout << INPUT_SEED;
-    std::getline(std::cin, seed_str);
-    int seed = stoi_with_check(seed_str);
-    init_with_cards(game_board, seed);
-
-    // More code
-    bool quitStatus= false;
-    askNumberAndNameOfPlayer(playerVect);
-    print(game_board);
-
-    return EXIT_SUCCESS;
+    unsigned int x1, x2, y1, y2, rows, columns, whoseTurn, numberOfPlayers;
+    static unsigned int turnCounter = 0;
+    char letter_1, letter_2;
+    rows = gameBoard.size();
+    if (rows > 0)
+    {
+        columns = gameBoard.at(0).size();
+    }
+    numberOfPlayers = players.size();
+    whoseTurn = turnCounter % numberOfPlayers;
+    inputCard(x1, x2, y1, y2, quitStatus, players, whoseTurn, rows, columns);
+    if (!quitStatus)
+    {
+        x1--;
+        x2--;
+        y1--;
+        y2--;
+        letter_1 = gameBoard.at(y1).at(x1).get_letter();
+        letter_2 = gameBoard.at(y2).at(x2).get_letter();
+        if (letter_1 != EMPTY_CHAR && letter_2 != EMPTY_CHAR)
+        {
+            gameBoard.at(y1).at(x1).set_visibility(OPEN);
+            gameBoard.at(y2).at(x2).set_visibility(OPEN);
+            print(gameBoard);
+            if (letter_1 == letter_2)
+            {
+                cout << FOUND << endl;
+                players[whoseTurn].add_card(gameBoard.at(y1).at(x1));
+                players[whoseTurn].add_card(gameBoard.at(y2).at(x2));
+            }
+            else
+            {
+                cout << NOT_FOUND << endl;
+                gameBoard.at(y1).at(x1).set_visibility(HIDDEN);
+                gameBoard.at(y2).at(x2).set_visibility(HIDDEN);
+                turnCounter += 1;
+            }
+            for (auto ele: players){
+                ele.print();
+            }
+        }
+        else
+            {
+                cout << INVALID_CARD << endl;
+            }
+    }
 }
 
+    int main()
+    {
+        Game_board_type game_board;
+        vector<Player> playerVect;
+
+        unsigned int factor1 = 1;
+        unsigned int factor2 = 1;
+        ask_product_and_calculate_factors(factor1, factor2);
+        init_with_empties(game_board, factor1, factor2);
+
+        string seed_str = "";
+        std::cout << INPUT_SEED;
+        std::getline(std::cin, seed_str);
+        int seed = stoi_with_check(seed_str);
+        init_with_cards(game_board, seed);
+
+        // More code
+        bool quitStatus = false;
+        askNumberAndNameOfPlayer(playerVect);
+        print(game_board);
+        
+        // turnCard(playerVect,game_board, quitStatus);
+
+        if (quitStatus)
+        {
+            cout << GIVING_UP << endl;
+        }
+
+        return EXIT_SUCCESS;
+    }

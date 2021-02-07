@@ -23,13 +23,14 @@ std::string Player::get_name() const {
 }
 
 unsigned int Player::number_of_pairs() const {
-    return numberOfPairs_;
+    return numberOfPairs_/2;
 }
 
 void Player::add_card(Card& card) {
     card.remove_from_game_board();
+    numberOfPairs_+=1;
 }
 
 void Player::print() const {
-   std::cout<<"*** "<<name_<<" has "<<numberOfPairs_<<" pair(s)."<<std::endl;
+   std::cout<<"*** "<<name_<<" has "<<numberOfPairs_/2<<" pair(s)."<<std::endl;
 }
