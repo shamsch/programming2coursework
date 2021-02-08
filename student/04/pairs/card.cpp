@@ -76,4 +76,5 @@ void Card::print() const
 void Card::remove_from_game_board()
 {
     visibility_ = EMPTY;
+    set_letter(EMPTY_CHAR);
 }

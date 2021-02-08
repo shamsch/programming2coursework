@@ -21,7 +21,7 @@
  *
  * Program author ( Fill with your own info )
  * Name: Shamsur Raza Chowdhury
- * Student number:050359798
+ * Student number: 050359798
  * UserID: rvshch 
  * E-Mail: shamsurraza.chowdhury@tuni.fi
  *
@@ -275,7 +275,7 @@ void askNumberAndNameOfPlayer(vector<Player> &playerVect)
     }
 }
 
-void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned int &y2, bool &quit, vector<Player> &players, unsigned int &nowPlaying, unsigned int &row, unsigned int &column)
+void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned int &y2, bool& quit, vector<Player> &players, unsigned int &nowPlaying, unsigned int &row, unsigned int &column, bool& input)
 {
     string playerInTurn = players.at(nowPlaying).get_name();
     quit = false;
@@ -291,6 +291,7 @@ void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned in
     if (inputCordinate == "q")
     {
         quit = true;
+        cout << GIVING_UP << endl;
     }
     else
     {
@@ -326,6 +327,7 @@ void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned in
             x2 = keepTheCoordinate.at(2);
             y1 = keepTheCoordinate.at(1);
             y2 = keepTheCoordinate.at(3);
+            input= true;
         }
         else
         {
@@ -343,6 +345,7 @@ void turnCard(vector<Player> &players, Game_board_type &gameBoard, bool &quitSta
     unsigned int x1, x2, y1, y2, rows, columns, whoseTurn, numberOfPlayers;
     static unsigned int turnCounter = 0;
     char letter_1, letter_2;
+    bool inputSuccess=false;
     rows = gameBoard.size();
     if (rows > 0)
     {
@@ -350,7 +353,10 @@ void turnCard(vector<Player> &players, Game_board_type &gameBoard, bool &quitSta
     }
     numberOfPlayers = players.size();
     whoseTurn = turnCounter % numberOfPlayers;
-    inputCard(x1, x2, y1, y2, quitStatus, players, whoseTurn, rows, columns);
+    while (!inputSuccess)
+    {
+        inputCard(x1, x2, y1, y2, quitStatus, players, whoseTurn, rows, columns, inputSuccess);
+    }
     if (!quitStatus)
     {
         x1--;
@@ -377,44 +383,103 @@ void turnCard(vector<Player> &players, Game_board_type &gameBoard, bool &quitSta
                 gameBoard.at(y2).at(x2).set_visibility(HIDDEN);
                 turnCounter += 1;
             }
-            for (auto ele: players){
+            for (auto ele : players)
+            {
                 ele.print();
             }
+            print(gameBoard);
         }
         else
-            {
-                cout << INVALID_CARD << endl;
-            }
+        {
+            cout << INVALID_CARD << endl;
+        }
     }
 }
 
-    int main()
+bool allCardsEmpty(Game_board_type game_board)
+{
+    bool allCardsEmpty = true;
+    unsigned int row, columns;
+    row = game_board.size();
+    if (row > 0)
     {
-        Game_board_type game_board;
-        vector<Player> playerVect;
-
-        unsigned int factor1 = 1;
-        unsigned int factor2 = 1;
-        ask_product_and_calculate_factors(factor1, factor2);
-        init_with_empties(game_board, factor1, factor2);
-
-        string seed_str = "";
-        std::cout << INPUT_SEED;
-        std::getline(std::cin, seed_str);
-        int seed = stoi_with_check(seed_str);
-        init_with_cards(game_board, seed);
-
-        // More code
-        bool quitStatus = false;
-        askNumberAndNameOfPlayer(playerVect);
-        print(game_board);
-        
-        // turnCard(playerVect,game_board, quitStatus);
-
-        if (quitStatus)
-        {
-            cout << GIVING_UP << endl;
-        }
-
-        return EXIT_SUCCESS;
+        columns = game_board.at(0).size();
     }
+    if (row > 0 && columns > 0)
+    {
+        for (unsigned int i = 0; i < row; i++)
+        {
+            for (unsigned int k = 0; k < columns ; k++)
+            {
+                if (game_board.at(i).at(k).get_letter() != EMPTY_CHAR)
+                {
+                    allCardsEmpty = false;
+                }
+            }
+        }
+    }
+    return allCardsEmpty;
+}
+
+void determineWinner(vector<Player> players){
+    unsigned int numOfPlayers= players.size();
+    unsigned int winnerCounter=0;
+    string nameOfTheWinner= "";
+    unsigned maxPoint=0;
+
+    if(numOfPlayers>0){
+        for(unsigned int i=0; i<numOfPlayers;i++){
+            if(players.at(i).number_of_pairs()>maxPoint){
+                maxPoint = players.at(i).number_of_pairs();
+            }
+        }
+        for(auto k:players){
+            if(k.number_of_pairs()==maxPoint){
+                if(winnerCounter==0){
+                    nameOfTheWinner=k.get_name();
+                }
+                winnerCounter+=1;
+            }
+        }
+        if(winnerCounter==1){
+            cout<<nameOfTheWinner<<" has won with "<<maxPoint<<" pairs."<<endl;
+        }
+        else if(winnerCounter>1){
+            cout << "Tie of " << winnerCounter << " players with " << maxPoint << " pairs." << endl;
+        }
+    } 
+}
+
+int main()
+{
+    Game_board_type game_board;
+    vector<Player> playerVect;
+
+    unsigned int factor1 = 1;
+    unsigned int factor2 = 1;
+    ask_product_and_calculate_factors(factor1, factor2);
+    init_with_empties(game_board, factor1, factor2);
+
+    string seed_str = "";
+    std::cout << INPUT_SEED;
+    std::getline(std::cin, seed_str);
+    int seed = stoi_with_check(seed_str);
+    init_with_cards(game_board, seed);
+
+    // More code
+    bool quitStatus = false;
+    askNumberAndNameOfPlayer(playerVect);
+    print(game_board);
+
+    while (quitStatus==false && allCardsEmpty(game_board)==false)
+    {
+        turnCard(playerVect, game_board, quitStatus);
+    }
+
+    if(allCardsEmpty(game_board)&& quitStatus== false){
+        cout<<"Game over!"<<endl;
+        determineWinner(playerVect);
+    }
+
+    return EXIT_SUCCESS;
+}
