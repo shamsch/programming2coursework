@@ -59,7 +59,7 @@ void Card::turn()
 
 void Card::print() const
 {
-    // Write implementation here
+
     if (visibility_ == OPEN)
     {
         std::cout<<letter_;

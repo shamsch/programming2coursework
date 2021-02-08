@@ -26,7 +26,7 @@
  * E-Mail: shamsurraza.chowdhury@tuni.fi
  *
  * Notes about the program and it's implementation:
- *
+ * It was a rather difficult and time consmuing project for a first one, which only makes me wonder what is to come. I implemented it by myself. 
  * */
 
 #include <iostream>
@@ -218,6 +218,7 @@ void ask_product_and_calculate_factors(unsigned int &smaller_factor, unsigned in
 
 // Self-made functions
 
+// This function is used for separating a string using space as a separator and then pushing each section to a string vector
 void convert_string_to_strVector(vector<string> &x, string y)
 {
     string add = "";
@@ -233,17 +234,19 @@ void convert_string_to_strVector(vector<string> &x, string y)
             add += y[i];
         }
     }
-
+    // Any residue after the last space being taken care of
     if (add != "")
     {
         x.push_back(add);
     }
 }
 
+//This function serves the purpose of asking user to input number of players and their names. Also, it validates the data and then creates necessary Player object and stores it
 void askNumberAndNameOfPlayer(vector<Player> &playerVect)
 {
     vector<string> nameOfThePlayers;
     unsigned int numberOfPlayer = 0;
+    // Taking input for the number of players in the game and also validating the it in the loop
     while (numberOfPlayer < 1)
     {
         cout << INPUT_AMOUNT_OF_PLAYERS;
@@ -255,18 +258,18 @@ void askNumberAndNameOfPlayer(vector<Player> &playerVect)
     nameOfThePlayers.clear();
     string temp = "";
     bool condition = true;
+    //Taking input for the name of the player and also using a self made function which then validates the data
     while (condition)
     {
         cout << "List " << numberOfPlayer << " players: ";
         getline(cin, temp);
-        // this part will be made into a function later
         convert_string_to_strVector(nameOfThePlayers, temp);
         if (nameOfThePlayers.size() >= numberOfPlayer)
         {
             condition = false;
         }
     }
-
+    // Once ready, creating Player object whose consturctor takes a string input for name of the player and then pushing it to a Player vector
     playerVect.clear();
     for (auto i : nameOfThePlayers)
     {
@@ -275,7 +278,8 @@ void askNumberAndNameOfPlayer(vector<Player> &playerVect)
     }
 }
 
-void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned int &y2, bool& quit, vector<Player> &players, unsigned int &nowPlaying, unsigned int &row, unsigned int &column, bool& input)
+//This function takes the coordinate input and checks the validity
+void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned int &y2, bool &quit, vector<Player> &players, unsigned int &nowPlaying, unsigned int &row, unsigned int &column, bool &input)
 {
     string playerInTurn = players.at(nowPlaying).get_name();
     quit = false;
@@ -288,12 +292,14 @@ void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned in
     cout << playerInTurn << ": " << INPUT_CARDS;
     getline(cin, inputCordinate);
     keepTheCoordinate.clear();
+    //In the case of quitting the function stops here
     if (inputCordinate == "q")
     {
         quit = true;
-        input= true;
+        input = true;
         return;
     }
+    //Otherwise it temporarily stores the coordinate systematically in an integar vector for validation
     else
     {
         string temp = "";
@@ -318,7 +324,7 @@ void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned in
             temp = "";
         }
     }
-
+    // This condition checks the validity of the coordinate inserted. I am aware it breaks a style rule, but I couldn't afford to fix it due to lack of time.
     bool condition = ((keepTheCoordinate.at(0) != keepTheCoordinate.at(2)) || (keepTheCoordinate.at(1) != keepTheCoordinate.at(3))) && (keepTheCoordinate.at(0) > 0) && (keepTheCoordinate.at(1) > 0) && (keepTheCoordinate.at(2) > 0) && (keepTheCoordinate.at(3) > 0) && (keepTheCoordinate.at(0) <= column) && (keepTheCoordinate.at(2) <= column) && (keepTheCoordinate.at(1) <= row) && (keepTheCoordinate.at(3) <= row);
     if (!quit && keepTheCoordinate.size() == 4)
     {
@@ -328,7 +334,7 @@ void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned in
             x2 = keepTheCoordinate.at(2);
             y1 = keepTheCoordinate.at(1);
             y2 = keepTheCoordinate.at(3);
-            input= true;
+            input = true;
         }
         else
         {
@@ -341,25 +347,30 @@ void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned in
     }
 }
 
+//This function essentially runs the program by turning card and finding match
 void turnCard(vector<Player> &players, Game_board_type &gameBoard, bool &quitStatus)
 {
     unsigned int x1, x2, y1, y2, rows, columns, whoseTurn, numberOfPlayers;
     static unsigned int turnCounter = 0;
     char letter_1, letter_2;
-    bool inputSuccess=false;
+    bool inputSuccess = false;
     rows = gameBoard.size();
     if (rows > 0)
     {
         columns = gameBoard.at(0).size();
     }
     numberOfPlayers = players.size();
+    //Finding out whose turn it is
     whoseTurn = turnCounter % numberOfPlayers;
+    //Taking input using a defined function
     while (!inputSuccess)
     {
         inputCard(x1, x2, y1, y2, quitStatus, players, whoseTurn, rows, columns, inputSuccess);
     }
+    //Finding the characters for those coordinate, checking for match, and updating number of pairs for the player
     if (!quitStatus)
     {
+        //This substraction of one allows us to adjust for the vector index starting from zero
         x1--;
         x2--;
         y1--;
@@ -374,6 +385,7 @@ void turnCard(vector<Player> &players, Game_board_type &gameBoard, bool &quitSta
             if (letter_1 == letter_2)
             {
                 cout << FOUND << endl;
+                //Using method from player.hh to update score
                 players[whoseTurn].add_card(gameBoard.at(y1).at(x1));
                 players[whoseTurn].add_card(gameBoard.at(y2).at(x2));
             }
@@ -397,6 +409,7 @@ void turnCard(vector<Player> &players, Game_board_type &gameBoard, bool &quitSta
     }
 }
 
+//This function checks if there is still any non-empty card left so as to continue the game or not
 bool allCardsEmpty(Game_board_type game_board)
 {
     bool allCardsEmpty = true;
@@ -410,8 +423,9 @@ bool allCardsEmpty(Game_board_type game_board)
     {
         for (unsigned int i = 0; i < row; i++)
         {
-            for (unsigned int k = 0; k < columns ; k++)
+            for (unsigned int k = 0; k < columns; k++)
             {
+                //Any non-empty card results in the function returning false hence continuing the game
                 if (game_board.at(i).at(k).get_letter() != EMPTY_CHAR)
                 {
                     allCardsEmpty = false;
@@ -422,33 +436,47 @@ bool allCardsEmpty(Game_board_type game_board)
     return allCardsEmpty;
 }
 
-void determineWinner(vector<Player> players){
-    unsigned int numOfPlayers= players.size();
-    unsigned int winnerCounter=0;
-    string nameOfTheWinner= "";
-    unsigned maxPoint=0;
+//This function finds the winner and print necessary statement at the end of the game
+void determineWinner(vector<Player> players)
+{
+    unsigned int numOfPlayers = players.size();
+    unsigned int winnerCounter = 0;
+    string nameOfTheWinner = "";
+    unsigned maxPoint = 0;
 
-    if(numOfPlayers>0){
-        for(unsigned int i=0; i<numOfPlayers;i++){
-            if(players.at(i).number_of_pairs()>maxPoint){
+    if (numOfPlayers > 0)
+    {
+        //Checking the max point or maximum number of point any player got
+        for (unsigned int i = 0; i < numOfPlayers; i++)
+        {
+            if (players.at(i).number_of_pairs() > maxPoint)
+            {
                 maxPoint = players.at(i).number_of_pairs();
             }
         }
-        for(auto k:players){
-            if(k.number_of_pairs()==maxPoint){
-                if(winnerCounter==0){
-                    nameOfTheWinner=k.get_name();
+        //Finding out the name of who got the max point
+        for (auto k : players)
+        {
+            if (k.number_of_pairs() == maxPoint)
+            {
+                if (winnerCounter == 0)
+                {
+                    nameOfTheWinner = k.get_name();
                 }
-                winnerCounter+=1;
+                winnerCounter += 1;
             }
         }
-        if(winnerCounter==1){
-            cout<<nameOfTheWinner<<" has won with "<<maxPoint<<" pairs."<<endl;
+        //If that is the only person then s/he wins.
+        if (winnerCounter == 1)
+        {
+            cout << nameOfTheWinner << " has won with " << maxPoint << " pairs." << endl;
         }
-        else if(winnerCounter>1){
+        //Else it's a tie
+        else if (winnerCounter > 1)
+        {
             cout << "Tie of " << winnerCounter << " players with " << maxPoint << " pairs." << endl;
         }
-    } 
+    }
 }
 
 int main()
@@ -469,20 +497,26 @@ int main()
 
     // More code
     bool quitStatus = false;
+    //Asking for number of playrs and their name
     askNumberAndNameOfPlayer(playerVect);
+    //Printing the board once
     print(game_board);
 
-    while (quitStatus==false && allCardsEmpty(game_board)==false)
+    //Games continues so long it has not been quit or there is still cards left to be played
+    while (quitStatus == false && allCardsEmpty(game_board) == false)
     {
         turnCard(playerVect, game_board, quitStatus);
     }
-
-    if(allCardsEmpty(game_board)&& quitStatus== false){
-        cout<<"Game over!"<<endl;
+    //Game over and determine the winner
+    if (allCardsEmpty(game_board) && quitStatus == false)
+    {
+        cout << "Game over!" << endl;
         determineWinner(playerVect);
     }
 
-    if(quitStatus){
+    //If quit, give a message and return with EXIT_SUCCESS
+    if (quitStatus)
+    {
         cout << GIVING_UP << endl;
         return EXIT_SUCCESS;
     }
