@@ -292,6 +292,7 @@ void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned in
     {
         quit = true;
         cout << GIVING_UP << endl;
+        input=true;
     }
     else
     {
