@@ -291,8 +291,8 @@ void inputCard(unsigned int &x1, unsigned int &x2, unsigned int &y1, unsigned in
     if (inputCordinate == "q")
     {
         quit = true;
-        cout << GIVING_UP << endl;
-        input=true;
+        input= true;
+        return;
     }
     else
     {
@@ -480,6 +480,11 @@ int main()
     if(allCardsEmpty(game_board)&& quitStatus== false){
         cout<<"Game over!"<<endl;
         determineWinner(playerVect);
+    }
+
+    if(quitStatus){
+        cout << GIVING_UP << endl;
+        return EXIT_SUCCESS;
     }
 
     return EXIT_SUCCESS;
