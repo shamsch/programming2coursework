@@ -25,6 +25,7 @@ int main() {
            lineCounter+=1;
         }
         file_object.close();
+        outputFile_object.close();
     }
 
     return EXIT_SUCCESS;
