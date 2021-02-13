@@ -6,3 +6,4 @@ examples/*
 *.env
 *.vscode
 *tempCodeRunnerFile.cpp
+*.txt
