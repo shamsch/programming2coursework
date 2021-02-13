@@ -41,9 +41,8 @@ int main()
                 word[j] = *iter;
                 ++iter;
             }
-
-            wordShuffled.push_back(word);
         }
+        wordShuffled.push_back(word);
 
     }
 }
