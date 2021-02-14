@@ -78,7 +78,7 @@ int main()
 
         for (auto ele : wordAndLine)
         {
-            cout << ele.first << " " << ele.second.size() << ": ";
+            cout << ele.first << " ";
             uniqueOccurenceCounter.clear();
             for (auto i : ele.second)
             {
@@ -91,6 +91,7 @@ int main()
                     uniqueOccurenceCounter.push_back(i);
                 }
             }
+            cout<<uniqueOccurenceCounter.size()<<": ";
             if (uniqueOccurenceCounter.size() > 1)
             {
                 for (auto k : uniqueOccurenceCounter)
