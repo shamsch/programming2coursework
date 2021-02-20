@@ -4,7 +4,7 @@
 #define RECURSIVE_FUNC
 #endif
 
-bool palindrome_recursive(std::string & inputString)
+bool palindrome_recursive(std::string inputString)
 {
     RECURSIVE_FUNC
     // Do not remove RECURSIVE_FUNC declaration, it's necessary for automatic testing to work
