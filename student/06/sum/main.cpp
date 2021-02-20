@@ -32,6 +32,17 @@ int sum_recursive(std::vector<int> v){
 
 
     // Add your implementation here
+    std::vector<int> copy;
+    copy.clear();
+    copy=v;
+    int length= v.size();
+    if(length==1){
+        return v.at(0);
+    }
+    else{
+        copy.pop_back();
+        return v.at(length-1)+sum_recursive(copy);
+    }
 }
 
 // Do not modify rest of the code, or the automated testing won't work.
