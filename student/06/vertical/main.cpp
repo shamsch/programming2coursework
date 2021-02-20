@@ -15,7 +15,7 @@ void print_vertical(unsigned int num)
     // Add your implementation here
     unsigned int copy;
     copy = num; //first we make a copy
-    if(num/10<1){
+    if(copy/10<1){
         std::cout<<copy<<endl; // if it just one digit we print that
     }
     else{
