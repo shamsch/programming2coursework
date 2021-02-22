@@ -44,35 +44,40 @@ void addToNetwork(map<string, vector<string>> &net, string &recruiter, string &a
         net.insert({recruiter, recruit});
     }
     vector<string> vect;
-    vect.clear();
+    // vect.clear();
     net.insert({adding, vect});
 }
 
-void printNetwork(map<string, vector<string>> &net, string &id, string& dot)
+void printNetwork(map<string, vector<string>> &net, string &id, string &dot)
 {
-    cout<<dot<<id<<endl;
-    if(net[id].size()>0){
+    cout << dot << id << endl;
+    if (net[id].size() > 0)
+    {
         for (auto x : net[id])
         {
-        string dots= dot+"..";
-        printNetwork(net, x, dots);
+            string dots = dot + "..";
+            printNetwork(net, x, dots);
         }
     }
 }
 
-unsigned int count(map<string, vector<string>> &net, string& id)
+unsigned int count(map<string, vector<string>> &net, string &id, unsigned int &counter)
 {
-    if (net[id].size() > 0)
+    
+    unsigned int newCounter = counter + net[id].size();
+    if (net[id].size()>0)
     {
         for (auto ele : net[id])
         {
-            return net[id].size() + count(net, ele);
+            return count(net, ele, newCounter);
         }
     }
     else
     {
-        return 0;
+        return counter;
     }
+
+    return 0;
 }
 
 int main()
@@ -113,10 +118,9 @@ int main()
                 continue;
             }
             std::string id = parts.at(1);
-            
 
             // TODO: Implement the command here!
-            string emptyToBeDots="";
+            string emptyToBeDots = "";
             printNetwork(netowrk, id, emptyToBeDots);
         }
         else if (command == "C" or command == "c")
@@ -130,7 +134,8 @@ int main()
             std::string id = parts.at(1);
 
             // TODO: Implement the command here!
-            cout << count(netowrk, id) << endl;
+            unsigned int counter = 0;
+            cout << count(netowrk, id, counter) << endl;
         }
         else if (command == "D" or command == "d")
         {
