@@ -44,7 +44,7 @@ void addToNetwork(map<string, vector<string>> &net, string &recruiter, string &a
         net.insert({recruiter, recruit});
     }
     vector<string> vect;
-    // vect.clear();
+    vect.clear();
     net.insert({adding, vect});
 }
 
@@ -61,23 +61,16 @@ void printNetwork(map<string, vector<string>> &net, string &id, string &dot)
     }
 }
 
-unsigned int count(map<string, vector<string>> &net, string &id, unsigned int &counter)
+unsigned int count(map<string, vector<string>> &net, string &id)
 {
-    
-    unsigned int newCounter = counter + net[id].size();
-    if (net[id].size()>0)
-    {
-        for (auto ele : net[id])
-        {
-            return count(net, ele, newCounter);
+    if(net[id].size()){
+        int sum=0;
+        for(auto ele:net[id]){
+            sum+=count(net,ele);
         }
+        return sum+net[id].size();
     }
-    else
-    {
-        return counter;
-    }
-
-    return 0;
+    return net[id].size();
 }
 
 int main()
@@ -134,8 +127,7 @@ int main()
             std::string id = parts.at(1);
 
             // TODO: Implement the command here!
-            unsigned int counter = 0;
-            cout << count(netowrk, id, counter) << endl;
+            cout << count(netowrk, id) << endl;
         }
         else if (command == "D" or command == "d")
         {
