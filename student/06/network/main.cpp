@@ -73,6 +73,19 @@ unsigned int count(map<string, vector<string>> &net, string &id)
     return net[id].size();
 }
 
+unsigned int depth(map<string, vector<string>> &net, string &id, unsigned int& depthCounter)
+{
+    unsigned int maxDepth=depthCounter;
+    if(net[id].size()){
+        for(auto element: net[id]){
+            unsigned int counter=depthCounter+1;
+            maxDepth=max(depth(net, element, counter),maxDepth);
+        }
+    }
+    return maxDepth;
+}
+
+
 int main()
 {
     // TODO: Implement the datastructure here
@@ -140,6 +153,8 @@ int main()
             std::string id = parts.at(1);
 
             // TODO: Implement the command here!
+            unsigned int initialVal=1;
+            cout << depth(netowrk, id, initialVal) << endl;
         }
         else if (command == "Q" or command == "q")
         {
