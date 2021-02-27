@@ -20,6 +20,7 @@
 
 using namespace std;
 using dataStrucutre = map<string, vector<pair<string, string>>>;
+const string ERROR = "Error: Invalid input.";
 
 // The most magnificent function in this whole program.
 // Prints a RASSE
@@ -139,14 +140,63 @@ bool readInputFile(dataStrucutre &cont)
     return true;
 }
 
+void printLines(dataStrucutre &cont)
+{
+    cout << "All tramlines in alphabetical order:" << endl;
+    for (auto element : cont)
+    {
+        cout << element.first << endl;
+    }
+}
+
 // Short and sweet main.
 int main()
 {
+    print_rasse();
     dataStrucutre mainContainer;
     if (!readInputFile(mainContainer))
     {
         return EXIT_FAILURE;
     }
-    print_rasse();
+    while (true)
+    {
+        std::string line;
+        std::cout << "tramway> ";
+        getline(std::cin, line);
+        std::vector<std::string> parts = split(line, ' ', true);
+
+        std::string command = parts.at(0);
+
+        if (command == "LINES")
+        {
+            if(parts.size()==1){
+                printLines(mainContainer);
+            }
+        }
+        else if (command == "STOPS")
+        {
+        }
+        else if (command == "DISTANCE")
+        {
+        }
+        else if (command == "ADDLINE")
+        {
+        }
+        else if (command == "ADDSTOP")
+        {
+        }
+        else if (command == "REMOVE")
+        {
+        }
+        else if (command == "QUIT")
+        {
+            break;
+        }
+        else
+        {
+            cout<<ERROR<<endl;
+        }
+    }
+
     return EXIT_SUCCESS;
 }
