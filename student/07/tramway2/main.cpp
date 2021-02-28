@@ -343,18 +343,19 @@ void removeAStopFromAllLine(dataStrucutre &cont, string &stopName)
 {
     bool removedAtLeastOnce= false;
     bool removeCondition= false;
-    pair<string, float> temp;
+    auto index=0;
     for (auto &map : cont)
     {
         for(auto &vec: map.second){
             if(vec.first==stopName){
-                temp= vec;
+                auto temp=find(map.second.begin(),map.second.end(),vec);
+                index=temp-map.second.begin();
                 removeCondition=true;
                 removedAtLeastOnce=true;
             }
         }
         if(removeCondition){
-            remove(map.second.begin(),map.second.end(), temp);
+            map.second.erase(map.second.begin()+index);
             removeCondition=false;
         }
     }
