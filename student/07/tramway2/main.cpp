@@ -363,7 +363,7 @@ void removeAStopFromAllLine(dataStrucutre &cont, string &stopName)
         cout<<"Stop was removed from all lines."<<endl;
     }
     else{
-        cout<<"Error: Invalid input"<<endl;
+        cout<<"Error: Stop could not be found."<<endl;
     }
 }
 
