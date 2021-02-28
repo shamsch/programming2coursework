@@ -383,6 +383,7 @@ int main()
         vector<string> parts = split(line, ' ', true);
 
         string command = parts.at(0);
+        transform(command.begin(),command.end(), command.begin(), ::toupper);
 
         if (command == "LINES")
         {
