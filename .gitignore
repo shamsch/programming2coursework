@@ -7,3 +7,4 @@ examples/*
 *.vscode
 *tempCodeRunnerFile.cpp
 *.txt
+!data.txt

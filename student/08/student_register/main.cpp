@@ -89,6 +89,7 @@ void change(std::map< std::string, Student*>& list, std::string& studentNumber, 
         std::cout<<"Enter a new phone number: ";
         std::string newPhoneNumber="";
         std::getline(std::cin,newPhoneNumber);
+        std::cout<<std::endl;
         bool validNumber=true;
         for(std::string::size_type i=0;i<newPhoneNumber.length();i++){
             if((isalpha(newPhoneNumber[i])) && (newPhoneNumber[i]!=' ')){
@@ -101,12 +102,11 @@ void change(std::map< std::string, Student*>& list, std::string& studentNumber, 
             std::ofstream fileobject(fileName);
 
             for(auto element: list){
-                fileobject<<element.second->student_number<<";"<<element.second->name<<";"<<element.second->phone_number<<";"<<element.second->email<<";"<<element.second->skype<<std::endl;
+                fileobject<<element.second->student_number<<";"<<element.second->user_id<<";"<<element.second->name<<";"<<element.second->phone_number<<";"<<element.second->email<<";"<<element.second->skype<<std::endl;
             }
             
         }
         else{
-            std::cout<<std::endl;
             std::cout<<"Erroneous phone number: "<<newPhoneNumber<<std::endl;
         }
     }
