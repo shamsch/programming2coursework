@@ -81,7 +81,7 @@ bool is_valid_phone_number(const std::string number) {
     return true;
 }
 
-void change(std::map< std::string, Student*>& list, std::string& studentNumber, std::string& fileName){
+void change(std::map< std::string, Student*>& list, std::string& studentNumber, std::string& fileName, std::map< std::string, Student* > userids){
     if(list.find(studentNumber)==list.end()){
         std::cout<<"There is no student with the given number!"<<std::endl;
     }
@@ -101,13 +101,14 @@ void change(std::map< std::string, Student*>& list, std::string& studentNumber, 
 
             std::ofstream fileobject(fileName);
 
-            for(auto element: list){
+            for(auto element: userids){
                 fileobject<<element.second->student_number<<";"<<element.second->user_id<<";"<<element.second->name<<";"<<element.second->phone_number<<";"<<element.second->email<<";"<<element.second->skype<<std::endl;
             }
             
         }
         else{
             std::cout<<"Erroneous phone number: "<<newPhoneNumber<<std::endl;
+            std::cout<<std::endl;
         }
     }
 }
@@ -167,7 +168,7 @@ int main() {
                 continue;
             }
             // TODO: Add functionality here
-            change(student_numbers, parts[1], file_name);
+            change(student_numbers, parts[1], file_name, user_ids);
 
 
         } else if(command == "Q" or command == "q") {
