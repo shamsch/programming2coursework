@@ -14,7 +14,7 @@ int greatest_v1(int* itemptr, int size) {
 }
 
 int greatest_v2(int* itemptr, int* endptr) {
-    int max=0;
+    int max=*itemptr;
     while(itemptr<endptr){
         max=std::max(max, *itemptr);
         itemptr++;
