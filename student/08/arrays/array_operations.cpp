@@ -3,7 +3,7 @@
 #include<algorithm> 
 
 int greatest_v1(int* itemptr, int size) {
-    int max;
+    int max=*itemptr;
     int counter=0;
     while(counter<size){
         max=std::max(max, *itemptr);
