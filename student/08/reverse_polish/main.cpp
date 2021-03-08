@@ -23,14 +23,14 @@ int main()
     int stack[80];
     cout << "Input an expression in reverse Polish notation (end with #):" << endl;
     cout << "EXPR> ";
-    gets(exp);
     char *ptr = exp;
     char *firstExp= exp;
     int *stackPtr = stack;
     int top = -1;
     int temp;
     int operatorCounter=0,operandsCounter=0;
-
+    cin.getline(exp, 80);
+    
     while (true)
     {
 
