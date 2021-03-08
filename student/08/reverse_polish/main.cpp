@@ -30,7 +30,8 @@ int main()
     int temp;
     int operatorCounter=0,operandsCounter=0;
     cin.getline(exp, 80);
-    
+    bool divByZero=false;
+
     while (true)
     {
 
@@ -64,15 +65,15 @@ int main()
         }
         else if (*ptr == '/')
         {
-            int x=pop(stackPtr, top, -1);
+            operatorCounter++;
+            int x= pop(stackPtr, top, -1);
             int y= pop(stackPtr, top, 1);
             if(x == 0 || y == 0){
-                cout<<"Error: Division by zero"<<endl;
-                return EXIT_FAILURE;
+                divByZero=true;
+                break;
             }
             temp = x /y ;
             push(temp, stackPtr, top);
-            operatorCounter++;
         }
         else if (*ptr == '#')
         {
@@ -100,6 +101,10 @@ int main()
     else if(operatorCounter<operandsCounter){
         cout<<"Error: Too few operators"<<endl;
         return EXIT_FAILURE;
+    }
+    else if(divByZero){
+       cout<<"Error: Division by zero"<<endl;
+       return EXIT_FAILURE;
     }
     
 }
