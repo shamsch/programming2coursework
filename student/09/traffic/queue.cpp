@@ -91,8 +91,8 @@ void Queue::dequeue(int numberOfTimes, bool needNotWait)
         }
         else{
             std::cout<<lightStatus()<<": Vehicle(s) "<<removedCars<<"can go on"<<std::endl;
+            is_green_=false;
         }
-        is_green_=false;
     }
 }
 
