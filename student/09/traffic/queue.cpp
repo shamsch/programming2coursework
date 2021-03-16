@@ -34,7 +34,7 @@ void Queue::enqueue(string reg)
     }
 
     if(is_green_){
-        dequeue(1);
+        dequeue(1,true);
     }
 }
 
@@ -67,7 +67,7 @@ void Queue::print()
     
 }
 
-void Queue::dequeue(int numberOfTimes)
+void Queue::dequeue(int numberOfTimes, bool needNotWait=false)
 {
     int counter=numberOfTimes;
     string removedCars="";
@@ -86,7 +86,12 @@ void Queue::dequeue(int numberOfTimes)
         std::cout<<lightStatus()<<": No vehicles waiting in traffic lights"<<std::endl;
     }
     else{
-        std::cout<<lightStatus()<<": Vehicle(s) "<<removedCars<<"can go on"<<std::endl;
+        if(needNotWait){
+            std::cout<<lightStatus()<<": Vehicle(s) "<<removedCars<<"need not stop to wait"<<std::endl;
+        }
+        else{
+            std::cout<<lightStatus()<<": Vehicle(s) "<<removedCars<<"can go on"<<std::endl;
+        }
         is_green_=false;
     }
 }

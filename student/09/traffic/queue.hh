@@ -55,7 +55,7 @@ private:
     // You can define more private features here
 
     //Dequeue 
-    void dequeue(int numberOfTimes);
+    void dequeue(int numberOfTimes, bool needNotWait=false);
     std::string lightStatus();
     std::string listVehicle();
 
