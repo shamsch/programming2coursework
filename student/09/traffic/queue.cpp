@@ -87,7 +87,7 @@ void Queue::dequeue(int numberOfTimes, bool needNotWait)
     }
     else{
         if(needNotWait){
-            std::cout<<lightStatus()<<": Vehicle(s) "<<removedCars<<"need not stop to wait"<<std::endl;
+            std::cout<<lightStatus()<<": The vehicle "<<removedCars<<"need not stop to wait"<<std::endl;
         }
         else{
             std::cout<<lightStatus()<<": Vehicle(s) "<<removedCars<<"can go on"<<std::endl;
