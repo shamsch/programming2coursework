@@ -2,6 +2,7 @@
 #define QUEUE_HH
 
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -52,6 +53,12 @@ private:
     unsigned int cycle_;
 
     // You can define more private features here
+
+    //Dequeue 
+    void dequeue(int numberOfTimes);
+    std::string lightStatus();
+    std::string listVehicle();
+
 
 };
 
