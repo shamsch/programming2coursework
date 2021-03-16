@@ -67,7 +67,7 @@ void Queue::print()
     
 }
 
-void Queue::dequeue(int numberOfTimes, bool needNotWait=false)
+void Queue::dequeue(int numberOfTimes, bool needNotWait)
 {
     int counter=numberOfTimes;
     string removedCars="";
