@@ -1,18 +1,19 @@
 #include "calculations.hh"
 #include <iostream>
 #include <iomanip>
-#include <sstream>  // for implementing function string_to_double
+#include <sstream> // for implementing function string_to_double
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
 const string GREETING_AT_END = "Thanks and see you later!";
 
 // Utility function to sections a string at delimiters
-vector< string > split(const string& s,
-                       const char delimiter,
-                       bool ignore_empty = false);
+vector<string> split(const string &s,
+                     const char delimiter,
+                     bool ignore_empty = false);
 
 // Function string_to_double changes a string comprising a real number
 // into a float type value for calculations.
@@ -20,15 +21,15 @@ vector< string > split(const string& s,
 // It returns false, if s was not a valid real number.
 // The converted float will be assigned into reference parameter result.
 // The implementation of the function uses stringstream for the sake of example.
-bool string_to_double(const string& s, double& result);
-
+bool string_to_double(const string &s, double &result);
 
 // TODO: Explore the following data structures!
-struct Command {
+struct Command
+{
     string str;
     vector<string>::size_type parameter_number;
     bool exit;
-    double(*action)(double, double);
+    double (*action)(double, double);
 };
 
 const vector<Command> COMMANDS = {
@@ -54,26 +55,35 @@ const vector<Command> COMMANDS = {
     {"DECREASE", 2, false, subtraction},
     {"MULTIPLY", 2, false, multiplication},
     {"DIVIDE", 2, false, division},
+    {"POWER", 2, false, power},
+    {"EXP", 2, false, power},
+    {"^", 2, false, power},
     {"STOP", 0, true, nullptr},
     {"QUIT", 0, true, nullptr},
     {"EXIT", 0, true, nullptr},
-    {"Q", 0, true, nullptr}
-};
+    {"Q", 0, true, nullptr}};
 
+double execute(double (*action)(double, double), double x, double y)
+{
+    return action(x, y);
+}
 
-int main() {
+int main()
+{
 
     // Using precision of two decimals in printing
     cout.precision(2);
     cout << fixed;
 
-    while ( true ) {
+    while (true)
+    {
         cout << "calculator> ";
 
         string line = "";
         getline(cin, line);
 
-        if ( line.empty() ) {
+        if (line.empty())
+        {
             // By inputting an empty line, the user can make the program end.
             cout << GREETING_AT_END << endl;
             break;
@@ -81,17 +91,55 @@ int main() {
 
         vector<string> pieces = split(line, ' ', true);
 
-        if(pieces.size() == 0){
+        if (pieces.size() == 0)
+        {
             continue;
         }
 
         string command_to_be_executed = pieces.at(0);
 
         // TODO: Implement command execution here!
+        transform(command_to_be_executed.begin(), command_to_be_executed.end(), command_to_be_executed.begin(), ::toupper);
 
+        bool unknownCommand = true;
+        for (auto element : COMMANDS)
+        {
+            if (element.str == command_to_be_executed)
+            {
+                unknownCommand = false;
+                if (element.parameter_number == pieces.size() - 1)
+                {
+                    if (element.exit)
+                    {
+                        cout<<GREETING_AT_END<<endl;
+                        return EXIT_SUCCESS;
+                    }
+                    else
+                    {
+                        double x, y;
+                        if (string_to_double(pieces.at(1), x) && string_to_double(pieces.at(2), y))
+                        {
+                            cout << execute(element.action, x, y) << endl;
+                        }
+                        else
+                        {
+                            cout << "Error: a non-number operand." << endl;
+                        }
+                    }
+                }
+                else
+                {
+                    cout << "Error: wrong number of parameters." << endl;
+                }
+            }
+        }
+
+        if (unknownCommand)
+        {
+            cout << "Error: unknown command." << endl;
+        }
     }
 }
-
 
 // This function exemplifies istringstreams.
 // It would be possible to use function stod of string to convert a string to
@@ -99,7 +147,8 @@ int main() {
 // at this phase of education.
 // It is easier to use the boolean type return value that can be
 // examined at calling point as done in the implementation below.
-bool string_to_double(const string& s, double& result) {
+bool string_to_double(const string &s, double &result)
+{
     // Initializing input stream of istringstream type the string that will
     // scanned with ">>" or getline.
     istringstream stream(s);
@@ -111,7 +160,8 @@ bool string_to_double(const string& s, double& result) {
     // and other ifstreams.
     stream >> tmp;
 
-    if ( not stream ) {
+    if (not stream)
+    {
         return false;
     }
 
@@ -130,32 +180,35 @@ bool string_to_double(const string& s, double& result) {
     // If it succeeds, then string s has something that it should not have.
     stream.get();
 
-    if ( stream ) {
+    if (stream)
+    {
         return false;
-    } else {
+    }
+    else
+    {
         result = tmp;
         return true;
     }
 }
 
 // Model implementation of good old split function
-vector< string > split(const string& s,
-                       const char delimiter,
-                       bool ignore_empty){
+vector<string> split(const string &s,
+                     const char delimiter,
+                     bool ignore_empty)
+{
     vector<string> result;
     string tmp = s;
 
-    while(tmp.find(delimiter) != string::npos)
+    while (tmp.find(delimiter) != string::npos)
     {
         string word = tmp.substr(0, tmp.find(delimiter));
-        tmp = tmp.substr(tmp.find(delimiter)+1, tmp.size());
-        if(not (ignore_empty and word.empty()))
+        tmp = tmp.substr(tmp.find(delimiter) + 1, tmp.size());
+        if (not(ignore_empty and word.empty()))
         {
             result.push_back(word);
         }
-
     }
-    if(not (ignore_empty and tmp.empty()))
+    if (not(ignore_empty and tmp.empty()))
     {
         result.push_back(tmp);
     }
