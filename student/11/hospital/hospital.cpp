@@ -70,7 +70,7 @@ void Hospital::leave(Params params)
     //remove from there
     //given an end date to the patient
     std::string nameOfthePatient = params.at(0);
-    if (current_patients_.find(nameOfthePatient) == current_patients_.end())
+    if (current_patients_.find(nameOfthePatient) != current_patients_.end())
     {
         current_patients_.erase(nameOfthePatient);
         for (auto element : carePeriods_)
@@ -83,14 +83,39 @@ void Hospital::leave(Params params)
         std::cout << PATIENT_LEFT << std::endl;
     }
     //if not found give error
-    else{
+    else
+    {
         std::cout << CANT_FIND << nameOfthePatient << std::endl;
     }
-    
 }
 
 void Hospital::assign_staff(Params params)
 {
+    //check if the caregiver and patient are in their respective list
+    std::string careGiver = params.at(0);
+    std::string patient = params.at(1);
+    if (staff_.find(careGiver) != staff_.end())
+    {
+        if (current_patients_.find(patient) != current_patients_.end())
+        {
+            for (auto element : carePeriods_)
+            {
+                if (patient == element->returnNameOfThePatient())
+                {
+                    element->addCareGiver(staff_[careGiver]);
+                    std::cout<<STAFF_ASSIGNED<<patient<<std::endl;
+                }
+            }
+        }
+        else
+        {
+            std::cout << CANT_FIND << patient << std::endl;
+        }
+    }
+    else
+    {
+        std::cout << CANT_FIND << careGiver << std::endl;
+    }
 }
 
 void Hospital::add_medicine(Params params)

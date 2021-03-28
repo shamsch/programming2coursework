@@ -114,6 +114,7 @@ private:
 
     // More attributes and methods
     std::vector<CarePeriod*> carePeriods_;
+    
 };
 
 #endif // HOSPITAL_HH
