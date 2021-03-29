@@ -44,23 +44,11 @@ void Hospital::enter(Params params)
         std::cout << ALREADY_EXISTS << nameOfthePatient << std::endl;
         return;
     }
-    //have to add process for checking if the person has been to hospital before
-    bool alreadyHasCarePeriod = false;
-    for (auto element : carePeriods_)
-    {
-        if (nameOfthePatient == element->returnNameOfThePatient())
-        {
-            alreadyHasCarePeriod = true;
-            element->setStartDate();
-        }
-    }
     Person *new_patient = new Person(nameOfthePatient);
-    if (!alreadyHasCarePeriod)
-    {
-        CarePeriod *carePeriod = new CarePeriod(utils::today, new_patient);
-        carePeriods_.push_back(carePeriod);
-    }
+    CarePeriod *carePeriod = new CarePeriod(utils::today, new_patient);
+    carePeriods_.push_back(carePeriod);
     current_patients_.insert({nameOfthePatient, new_patient});
+    all_patients_.insert({nameOfthePatient, new_patient});
     std::cout << PATIENT_ENTERED << std::endl;
 }
 
@@ -102,8 +90,9 @@ void Hospital::assign_staff(Params params)
             {
                 if (patient == element->returnNameOfThePatient())
                 {
+                    //assign the caregiver
                     element->addCareGiver(staff_[careGiver]);
-                    std::cout<<STAFF_ASSIGNED<<patient<<std::endl;
+                    std::cout << STAFF_ASSIGNED << patient << std::endl;
                 }
             }
         }
@@ -158,6 +147,30 @@ void Hospital::remove_medicine(Params params)
 
 void Hospital::print_patient_info(Params params)
 {
+    std::string patient = params.at(0);
+    //print the careperiod
+    if (current_patients_.find(patient) != current_patients_.end())
+    {
+        for (auto element : carePeriods_)
+        {
+            if (patient == element->returnNameOfThePatient())
+            {
+                element->printCarePeriod();
+                std::cout<<std::endl;
+                //print care givers
+                element->printCareGivers();
+                std::cout<<std::endl;
+            }
+            
+        }
+        //print drugs
+        std::cout << "* Medicines:";
+        all_patients_[patient]->print_medicines("  - ");
+    }
+    else
+    {
+        std::cout << CANT_FIND << patient << std::endl;
+    }
 }
 
 void Hospital::print_care_periods_per_staff(Params params)

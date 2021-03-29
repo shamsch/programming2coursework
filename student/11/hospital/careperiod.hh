@@ -31,6 +31,9 @@ public:
     void setStartDate();
     std::string returnNameOfThePatient();
     void addCareGiver(Person* careGiver);
+    void printCareGivers();
+    void printCarePeriod();
+    Person returnThePerson();
 
 private:
     Person* patient_;
@@ -39,6 +42,7 @@ private:
 
     // More attributes and methods
     std::vector<Person*> careGivers;
+    bool endPeriodExist=false;
 };
 
 #endif // CAREPERIOD_HH

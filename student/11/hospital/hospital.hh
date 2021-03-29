@@ -114,7 +114,7 @@ private:
 
     // More attributes and methods
     std::vector<CarePeriod*> carePeriods_;
-    
+    std::map<std::string, Person*> all_patients_;
 };
 
 #endif // HOSPITAL_HH
