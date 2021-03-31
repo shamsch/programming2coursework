@@ -33,7 +33,7 @@ public:
     void addCareGiver(Person* careGiver);
     void printCareGivers();
     void printCarePeriod();
-    Person returnThePerson();
+    Person* returnThePerson();
 
 private:
     Person* patient_;

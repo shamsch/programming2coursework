@@ -93,6 +93,17 @@ void Hospital::assign_staff(Params params)
                     //assign the caregiver
                     element->addCareGiver(staff_[careGiver]);
                     std::cout << STAFF_ASSIGNED << patient << std::endl;
+                    //also adding the patient in staff/caregivers map
+                    if (staffAssignments.find(staff_[careGiver]) != staffAssignments.end())
+                    {
+                        staffAssignments[staff_[careGiver]].push_back(element);
+                    }
+                    else
+                    {
+                        std::vector<CarePeriod *> temp;
+                        temp.push_back(element);
+                        staffAssignments.insert({staff_[careGiver], temp});
+                    }
                 }
             }
         }
@@ -128,6 +139,17 @@ void Hospital::add_medicine(Params params)
     }
     patient_iter->second->add_medicine(medicine, stoi(strength), stoi(dosage));
     std::cout << MEDICINE_ADDED << patient << std::endl;
+    //adding the medicine in list of medicine 
+    if (medcinesInUse.find(medicine) != medcinesInUse.end())
+    {
+        medcinesInUse[medicine].push_back(patient);
+    }
+    else
+    {
+        std::vector<std::string> temp;
+        temp.push_back(patient);
+        medcinesInUse.insert({medicine, temp});
+    }
 }
 
 void Hospital::remove_medicine(Params params)
@@ -155,13 +177,13 @@ void Hospital::print_patient_info(Params params)
         {
             if (patient == element->returnNameOfThePatient())
             {
+                std::cout << "* Care period: ";
                 element->printCarePeriod();
-                std::cout<<std::endl;
+                std::cout << std::endl;
                 //print care givers
                 element->printCareGivers();
-                std::cout<<std::endl;
+                std::cout << std::endl;
             }
-            
         }
         //print drugs
         std::cout << "* Medicines:";
@@ -175,6 +197,28 @@ void Hospital::print_patient_info(Params params)
 
 void Hospital::print_care_periods_per_staff(Params params)
 {
+    std::string nameOfTheStaff = params.at(0);
+    if (staff_.find(nameOfTheStaff) != staff_.end())
+    {
+        if (staffAssignments.count(staff_[nameOfTheStaff]))
+        {
+            //has assignments
+            for (auto element : staffAssignments[staff_[nameOfTheStaff]])
+            {
+                element->printCarePeriod();
+                std::cout << "\n* Patient: " << element->returnNameOfThePatient() << std::endl;
+            }
+        }
+        else
+        {
+            //does not have any assignment
+            std::cout << "None" << std::endl;
+        }
+    }
+    else
+    {
+        std::cout << CANT_FIND << nameOfTheStaff << std::endl;
+    }
 }
 
 void Hospital::print_all_medicines(Params)

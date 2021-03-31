@@ -19,7 +19,7 @@ CarePeriod::~CarePeriod()
 void CarePeriod::setEndDate()
 {
     end_ = utils::today;
-    endPeriodExist=true;
+    endPeriodExist = true;
 }
 
 void CarePeriod::setStartDate()
@@ -37,7 +37,7 @@ void CarePeriod::addCareGiver(Person *careGiver)
     //adding only unique care giver person
     if (std::find(careGivers.begin(), careGivers.end(), careGiver) == careGivers.end())
     {
-        careGivers.insert(careGivers.begin() ,careGiver);
+        careGivers.insert(careGivers.begin(), careGiver);
     }
 }
 void CarePeriod::printCareGivers()
@@ -58,14 +58,15 @@ void CarePeriod::printCareGivers()
 
 void CarePeriod::printCarePeriod()
 {
-    std::cout << "* Care period: ";
     start_.print();
     std::cout << " - ";
-    if(endPeriodExist){
+    if (endPeriodExist)
+    {
         end_.print();
-    }  
+    }
 }
 
-Person CarePeriod::returnThePerson(){
-    return *patient_;
+Person *CarePeriod::returnThePerson()
+{
+    return patient_;
 }
