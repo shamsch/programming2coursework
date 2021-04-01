@@ -3,6 +3,7 @@
 #include <iostream>
 #include <set>
 #include <map>
+#include <algorithm>
 
 Hospital::Hospital()
 {
@@ -139,7 +140,7 @@ void Hospital::add_medicine(Params params)
     }
     patient_iter->second->add_medicine(medicine, stoi(strength), stoi(dosage));
     std::cout << MEDICINE_ADDED << patient << std::endl;
-    //adding the medicine in list of medicine 
+    //adding the medicine in list of medicine and recording the user of that particular drug
     if (medcinesInUse.find(medicine) != medcinesInUse.end())
     {
         medcinesInUse[medicine].push_back(patient);
@@ -165,6 +166,21 @@ void Hospital::remove_medicine(Params params)
     }
     patient_iter->second->remove_medicine(medicine);
     std::cout << MEDICINE_REMOVED << patient << std::endl;
+    //removing the patient from the medcine use
+    int index = 0;
+    for (auto element : medcinesInUse[medicine])
+    {
+        if (patient == element)
+        {
+            medcinesInUse[medicine].erase(medcinesInUse[medicine].begin() + index);
+        }
+        index++;
+    }
+    //when no one is using that medicine anymore
+    if (medcinesInUse[medicine].size() < 1)
+    {
+        medcinesInUse.erase(medicine);
+    }
 }
 
 void Hospital::print_patient_info(Params params)
@@ -223,6 +239,25 @@ void Hospital::print_care_periods_per_staff(Params params)
 
 void Hospital::print_all_medicines(Params)
 {
+    if (medcinesInUse.size())
+    {
+        //if there is any drug
+        for (auto element : medcinesInUse)
+        {
+            std::cout << element.first << " prescribed for" << std::endl;
+            //sorting patient vector
+            std::sort(element.second.begin(), element.second.end());
+            for (auto patient : element.second)
+            {
+                std::cout << "- " << patient << std::endl;
+            }
+        }
+    }
+    else
+    {
+        //if no drug in use
+        std::cout << "None" << std::endl;
+    }
 }
 
 void Hospital::print_all_staff(Params)
