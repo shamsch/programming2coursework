@@ -195,7 +195,7 @@ void Hospital::print_patient_info(Params params)
 {
     std::string patient = params.at(0);
     //print the careperiod
-    if (current_patients_.find(patient) != current_patients_.end())
+    if (all_patients_.find(patient) != all_patients_.end())
     {
         for (auto element : carePeriods_)
         {
