@@ -74,7 +74,7 @@ void Hospital::leave(Params params)
         {
             if (nameOfthePatient == element->returnNameOfThePatient())
             {
-                element->setEndDate();
+                element->setEndDate(utils::today);
             }
         }
         std::cout << PATIENT_LEFT << std::endl;

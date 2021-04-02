@@ -14,18 +14,13 @@ CarePeriod::CarePeriod(const Date &start, Person *patient) : patient_(patient), 
 
 CarePeriod::~CarePeriod()
 {
-    
+
 }
 
-void CarePeriod::setEndDate()
+void CarePeriod::setEndDate(Date &date)
 {
-    end_ = utils::today;
+    end_=date;
     endPeriodExist = true;
-}
-
-void CarePeriod::setStartDate()
-{
-    start_ = utils::today;
 }
 
 std::string CarePeriod::returnNameOfThePatient()

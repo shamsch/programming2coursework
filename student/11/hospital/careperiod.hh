@@ -11,6 +11,7 @@
 
 #include "person.hh"
 #include "date.hh"
+#include "utils.hh"
 #include <string>
 
 class CarePeriod
@@ -27,8 +28,7 @@ public:
 
     // More public methods
 
-    void setEndDate();
-    void setStartDate();
+    void setEndDate(Date &date);
     std::string returnNameOfThePatient();
     void addCareGiver(Person* careGiver);
     void printCareGivers();
