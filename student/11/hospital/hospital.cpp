@@ -185,7 +185,7 @@ void Hospital::remove_medicine(Params params)
         index++;
     }
     //when no one is using that medicine anymore
-    if (medcinesInUse[medicine].size() < 1)
+    if (medcinesInUse[medicine].size() == 0)
     {
         medcinesInUse.erase(medicine);
     }
@@ -257,7 +257,7 @@ void Hospital::print_all_medicines(Params)
             std::sort(element.second.begin(), element.second.end());
             for (auto patient : element.second)
             {
-                std::cout << "- " << patient << std::endl;
+                std::cout << "* " << patient << std::endl;
             }
         }
     }
