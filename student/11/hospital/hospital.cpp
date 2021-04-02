@@ -21,11 +21,13 @@ Hospital::~Hospital()
     }
 
     // Remember to deallocate patients also
-    for(auto patient: all_patients_){
+    for (auto patient : all_patients_)
+    {
         delete patient.second;
     }
 
-    for(auto carePeriods: carePeriods_){
+    for (auto carePeriods : carePeriods_)
+    {
         delete carePeriods;
     }
 }
@@ -56,8 +58,18 @@ void Hospital::enter(Params params)
     Person *new_patient = new Person(nameOfthePatient);
     CarePeriod *carePeriod = new CarePeriod(utils::today, new_patient);
     carePeriods_.push_back(carePeriod);
-    current_patients_.insert({nameOfthePatient, new_patient});
-    all_patients_.insert({nameOfthePatient, new_patient});
+    
+    //completely new patient
+    if (all_patients_.find(nameOfthePatient) == all_patients_.end())
+    {
+        current_patients_.insert({nameOfthePatient, new_patient});
+        all_patients_.insert({nameOfthePatient, new_patient});
+    }
+    //old patient but re-entering
+    else{
+        current_patients_.insert({nameOfthePatient, all_patients_[nameOfthePatient]});
+    }
+
     std::cout << PATIENT_ENTERED << std::endl;
 }
 
@@ -294,7 +306,7 @@ void Hospital::print_all_patients(Params)
         for (auto patient : all_patients_)
         {
             //print name of the patient
-            std::cout<<patient.first<<std::endl;
+            std::cout << patient.first << std::endl;
             for (auto element : carePeriods_)
             {
                 if (patient.first == element->returnNameOfThePatient())
@@ -325,7 +337,7 @@ void Hospital::print_current_patients(Params)
         for (auto patient : current_patients_)
         {
             //print name of the patient
-            std::cout<<patient.first<<std::endl;
+            std::cout << patient.first << std::endl;
             for (auto element : carePeriods_)
             {
                 if (patient.first == element->returnNameOfThePatient())
