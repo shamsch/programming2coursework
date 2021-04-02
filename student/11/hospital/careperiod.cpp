@@ -45,6 +45,7 @@ void CarePeriod::printCareGivers()
     }
     else
     {
+        std::sort(careGivers.begin(),careGivers.end());
         for (auto staff : careGivers)
         {
             std::cout << " " << staff->get_id();
