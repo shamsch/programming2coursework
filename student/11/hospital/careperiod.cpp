@@ -14,6 +14,7 @@ CarePeriod::CarePeriod(const Date &start, Person *patient) : patient_(patient), 
 
 CarePeriod::~CarePeriod()
 {
+    
 }
 
 void CarePeriod::setEndDate()

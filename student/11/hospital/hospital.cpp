@@ -21,6 +21,13 @@ Hospital::~Hospital()
     }
 
     // Remember to deallocate patients also
+    for(auto patient: all_patients_){
+        delete patient.second;
+    }
+
+    for(auto carePeriods: carePeriods_){
+        delete carePeriods;
+    }
 }
 
 void Hospital::recruit(Params params)
@@ -45,6 +52,7 @@ void Hospital::enter(Params params)
         std::cout << ALREADY_EXISTS << nameOfthePatient << std::endl;
         return;
     }
+    //declaring new Person and CarePeriod
     Person *new_patient = new Person(nameOfthePatient);
     CarePeriod *carePeriod = new CarePeriod(utils::today, new_patient);
     carePeriods_.push_back(carePeriod);
@@ -308,6 +316,33 @@ void Hospital::print_all_patients(Params)
 
 void Hospital::print_current_patients(Params)
 {
+    if (current_patients_.empty())
+    {
+        std::cout << "None" << std::endl;
+    }
+    else
+    {
+        for (auto patient : current_patients_)
+        {
+            //print name of the patient
+            std::cout<<patient.first<<std::endl;
+            for (auto element : carePeriods_)
+            {
+                if (patient.first == element->returnNameOfThePatient())
+                {
+                    std::cout << "* Care period: ";
+                    element->printCarePeriod();
+                    std::cout << std::endl;
+                    //print care givers
+                    element->printCareGivers();
+                    std::cout << std::endl;
+                }
+            }
+            //print drugs
+            std::cout << "* Medicines:";
+            all_patients_[patient.first]->print_medicines("  - ");
+        }
+    }
 }
 
 void Hospital::set_date(Params params)
