@@ -58,7 +58,7 @@ void Hospital::enter(Params params)
     Person *new_patient = new Person(nameOfthePatient);
     CarePeriod *carePeriod = new CarePeriod(utils::today, new_patient);
     carePeriods_.push_back(carePeriod);
-    
+
     //completely new patient
     if (all_patients_.find(nameOfthePatient) == all_patients_.end())
     {
@@ -66,7 +66,8 @@ void Hospital::enter(Params params)
         all_patients_.insert({nameOfthePatient, new_patient});
     }
     //old patient but re-entering
-    else{
+    else
+    {
         current_patients_.insert({nameOfthePatient, all_patients_[nameOfthePatient]});
     }
 
@@ -160,19 +161,6 @@ void Hospital::add_medicine(Params params)
     }
     patient_iter->second->add_medicine(medicine, stoi(strength), stoi(dosage));
     std::cout << MEDICINE_ADDED << patient << std::endl;
-    //adding the medicine in list of medicine and recording the user of that particular drug
-    if (medcinesInUse.find(medicine) != medcinesInUse.end())
-    {
-        if(std::find(medcinesInUse[medicine].begin(), medcinesInUse[medicine].end(), patient) == medcinesInUse[medicine].end()){
-            medcinesInUse[medicine].push_back(patient);
-        }
-    }
-    else
-    {
-        std::vector<std::string> temp;
-        temp.push_back(patient);
-        medcinesInUse.insert({medicine, temp});
-    }
 }
 
 void Hospital::remove_medicine(Params params)
@@ -188,21 +176,6 @@ void Hospital::remove_medicine(Params params)
     }
     patient_iter->second->remove_medicine(medicine);
     std::cout << MEDICINE_REMOVED << patient << std::endl;
-    //removing the patient from the medcine use
-    int index = 0;
-    for (auto element : medcinesInUse[medicine])
-    {
-        if (patient == element)
-        {
-            medcinesInUse[medicine].erase(medcinesInUse[medicine].begin() + index);
-        }
-        index++;
-    }
-    //when no one is using that medicine anymore
-    if (medcinesInUse[medicine].size() == 0)
-    {
-        medcinesInUse.erase(medicine);
-    }
 }
 
 void Hospital::print_patient_info(Params params)
@@ -261,24 +234,49 @@ void Hospital::print_care_periods_per_staff(Params params)
 
 void Hospital::print_all_medicines(Params)
 {
-    if (medcinesInUse.size())
+    //creating a map record of the medcine, updates each time it is called so it can account for removal of med
+    std::map<std::string, std::vector<std::string>> recordOfMedicine;
+    //iterating over all patients 
+    for (auto patient : all_patients_)
     {
-        //if there is any drug
-        for (auto element : medcinesInUse)
+        //iterating over the meds they use (real time)
+        for (auto med : patient.second->get_medicines())
         {
-            std::cout << element.first << " prescribed for" << std::endl;
-            //sorting patient vector
-            std::sort(element.second.begin(), element.second.end());
-            for (auto patient : element.second)
+            //if the med in use is not in the map, add it
+            if (recordOfMedicine.find(med) == recordOfMedicine.end())
             {
-                std::cout << "* " << patient << std::endl;
+                //in doing so also create a temp vector and add the user/patient to later insert as the data of the key 
+                std::vector<std::string> temp;
+                temp.push_back(patient.second->get_id());
+                recordOfMedicine.insert({med, temp});
+            }
+            else
+            {
+                //in the case that the drug is already in the map, but the user is not, so add it
+                if (std::find(recordOfMedicine[med].begin(), recordOfMedicine[med].end(), patient.second->get_id()) == recordOfMedicine[med].end())
+                {
+                    recordOfMedicine[med].push_back(patient.second->get_id());
+                }
             }
         }
     }
+    if (recordOfMedicine.empty())
+    {
+        //empty case
+        std::cout << "None" << std::endl;
+    }
     else
     {
-        //if no drug in use
-        std::cout << "None" << std::endl;
+        for (auto drug : recordOfMedicine)
+        {
+            //sort before print 
+            std::cout << drug.first << " prescribed for" << std::endl;
+            std::sort(drug.second.begin(), drug.second.end());
+            for (auto user : drug.second)
+            {
+                std::cout << "* " << user << std::endl;
+            }
+        }
     }
 }
 
