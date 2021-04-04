@@ -236,7 +236,7 @@ void Hospital::print_all_medicines(Params)
 {
     //creating a map record of the medcine, updates each time it is called so it can account for removal of med
     std::map<std::string, std::vector<std::string>> recordOfMedicine;
-    //iterating over all patients 
+    //iterating over all patients
     for (auto patient : all_patients_)
     {
         //iterating over the meds they use (real time)
@@ -245,7 +245,7 @@ void Hospital::print_all_medicines(Params)
             //if the med in use is not in the map, add it
             if (recordOfMedicine.find(med) == recordOfMedicine.end())
             {
-                //in doing so also create a temp vector and add the user/patient to later insert as the data of the key 
+                //in doing so also create a temp vector and add the user/patient to later insert as the data of the key
                 std::vector<std::string> temp;
                 temp.push_back(patient.second->get_id());
                 recordOfMedicine.insert({med, temp});
@@ -269,7 +269,7 @@ void Hospital::print_all_medicines(Params)
     {
         for (auto drug : recordOfMedicine)
         {
-            //sort before print 
+            //sort before print
             std::cout << drug.first << " prescribed for" << std::endl;
             std::sort(drug.second.begin(), drug.second.end());
             for (auto user : drug.second)

@@ -39,12 +39,14 @@ void CarePeriod::addCareGiver(Person *careGiver)
 void CarePeriod::printCareGivers()
 {
     std::cout << "  - Staff:";
+    //if no caregiver is appointed
     if (!careGivers.size())
     {
         std::cout << " None";
     }
     else
     {
+        //sorts
         std::sort(careGivers.begin(),careGivers.end());
         for (auto staff : careGivers)
         {

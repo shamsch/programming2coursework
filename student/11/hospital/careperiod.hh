@@ -28,11 +28,17 @@ public:
 
     // More public methods
 
+    //sets the end date of the careperiod to the parameter
     void setEndDate(Date &date);
+    //returns the string name of the patient whose careperiod it is
     std::string returnNameOfThePatient();
+    //adds a caregiver to the patient 
     void addCareGiver(Person* careGiver);
+    //prints all the caregiver in the careperiod
     void printCareGivers();
+    //prints the careperiods timeline
     void printCarePeriod();
+    //returns the pointer of Person class whose care period it is 
     Person* returnThePerson();
 
 private:
@@ -41,7 +47,9 @@ private:
     Date end_;
 
     // More attributes and methods
+    //contains all the caregiver
     std::vector<Person*> careGivers;
+    //checks for whether the care period has an end date or not
     bool endPeriodExist=false;
 };
 
