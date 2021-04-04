@@ -163,7 +163,9 @@ void Hospital::add_medicine(Params params)
     //adding the medicine in list of medicine and recording the user of that particular drug
     if (medcinesInUse.find(medicine) != medcinesInUse.end())
     {
-        medcinesInUse[medicine].push_back(patient);
+        if(std::find(medcinesInUse[medicine].begin(), medcinesInUse[medicine].end(), patient) == medcinesInUse[medicine].end()){
+            medcinesInUse[medicine].push_back(patient);
+        }
     }
     else
     {
