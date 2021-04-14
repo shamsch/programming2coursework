@@ -24,9 +24,19 @@ public:
 private slots:
     // Add your slots here
 
+    void on_startButton_clicked();
+    void runTheClock();
+
+    void on_stopButton_clicked();
+
+    void on_resetButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     // Add other necessary members here
+    unsigned int secs=0;
+    unsigned int mins=0;
+    bool startPressed=false;
 };
 
 #endif // MAINWINDOW_HH
