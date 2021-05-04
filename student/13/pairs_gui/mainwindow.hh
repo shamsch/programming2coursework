@@ -25,15 +25,13 @@ public:
 private slots:
     void on_amountOfCardLineEdit_editingFinished();
 
-    void on_seedValueLineEdit_editingFinished();
-
-    void on_numberOfPlayerLineEdit_editingFinished();
-
     void on_playerNameStringLineEdit_editingFinished();
 
     void on_startGamePushButton_clicked();
 
     void cardClicked();
+
+    void nextTurnClicked();
 
 private:
     Ui::MainWindow *ui;
@@ -45,8 +43,13 @@ private:
     int row=0;
     int col=0;
     int cardsOpen=0;
+    int playerInTurn=1;
+    int playerOnePts=0;
+    int playerTwoPts=0;
+    int cardsLeftToPlay;
 
     QStringList nameOfPlayer;
+    QString inTurn="";
 
     std::string randomString="";
 
@@ -62,6 +65,12 @@ private:
 
     void findRowAndCol(int number, int &row, int &col);
 
+    void givePointToPlayerInTurn();
+    void closeOpenCards();
+    void updatePlayerScore();
+    void announceWinner();
+
     bool gameStarted=false;
+    bool matchFound= false;
 };
 #endif // MAINWINDOW_HH
