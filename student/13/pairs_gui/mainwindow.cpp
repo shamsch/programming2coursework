@@ -39,10 +39,17 @@ void MainWindow::validateData()
     if(amountOfCards%2==0 && amountOfCards!=0){
         if(nameOfPlayer.size()==2){
             ui->startGamePushButton->setText("Game started");
+
+            //disabling the button after game start
+
             ui->startGamePushButton->setEnabled(false);
+
             ui->gameStatusTextBrowser->setText(nameOfPlayer[0]+" is in turn");
+
             cardsLeftToPlay=amountOfCards;
+
             findRowAndCol(amountOfCards,row,col);
+
             makeBoardGUI(row,col);
         }
         else{
@@ -59,9 +66,11 @@ void MainWindow::makeARandomString(int n)
 {
     char starter='A';
     for(int i=0; i<n/2;i++){
+        //adding the same letter twice so they are always in pair
         randomString+= (starter+i);
         randomString+= (starter+i);
     }
+    //for the purpose of randomness
     std::random_shuffle(randomString.begin(),randomString.end());
 }
 
@@ -75,19 +84,24 @@ void MainWindow::on_startGamePushButton_clicked()
 void MainWindow::cardClicked()
 {
     if(cardsOpen<2){
+        //finding the button which has been clicked
         QPushButton *button = (QPushButton *) sender();
+
+        //changing style
         button->setStyleSheet("QPushButton { background-color: blue; }\n"
                   "QPushButton:enabled { background-color: rgb(0, 128, 0); }\n");
          for(unsigned int i = 0; i < cardButton_.size(); ++i)
          {
              if(cardButton_.at(i)==button)
              {
+                 //getting the character behind the button
                  QString alphabet;
                  alphabet= buttonWithLetters[cardButton_.at(i)];
                  button->setText(alphabet);
              }
          }
 
+         // this will prevent the bug of pressing the same button twice and finding a match
          if (std::find(openCards.begin(), openCards.end(), button)
                  == openCards.end()) {
              openCards.push_back(button);
@@ -101,6 +115,7 @@ void MainWindow::cardClicked()
 
 void MainWindow::nextTurnClicked()
 {
+    //checks for match
     if(cardsOpen==2 && cardsLeftToPlay>0){
         if(buttonWithLetters[openCards.at(0)]
                 ==buttonWithLetters[openCards.at(1)]){
@@ -112,6 +127,8 @@ void MainWindow::nextTurnClicked()
         ++playerInTurn;
         closeOpenCards();
     }
+
+    // when all cards have been played
     if(cardsLeftToPlay==0){
         QPushButton *button = (QPushButton *) sender();
         button->setText("Check result!");
@@ -123,7 +140,10 @@ void MainWindow::nextTurnClicked()
 // This method resets the game and sets all value to default
 void MainWindow::restartGameClicked()
 {
+    // closing the window
     gameBoard->accept();
+
+    //reseting all values for a new game
     ui->amountOfCardLineEdit->setText("");
     ui->playerNameStringLineEdit->setText("");
     ui->startGamePushButton->setEnabled(true);
@@ -145,12 +165,13 @@ void MainWindow::restartGameClicked()
 //This method creates the dialog window of the cards namely gameboard
 void MainWindow::makeBoardGUI(int noOfRow, int noOfCol)
 {
-
+    // a new dialog window
     gameBoard = new Dialog(this);
 
     QWidget *widget= new QWidget(gameBoard);
     QGridLayout *layout= new QGridLayout(widget);
 
+    //placing the buttons with loop
     for(int i=0;i<noOfRow;i++){
         for(int j=0; j<noOfCol; j++){
             QPushButton *button = new QPushButton("X",this);
@@ -166,7 +187,7 @@ void MainWindow::makeBoardGUI(int noOfRow, int noOfCol)
         }
     }
 
-
+    //the other two buttons for game running purposes
     QPushButton *nextTurn= new QPushButton("Next turn", this);
     layout->addWidget(nextTurn, noOfRow, noOfCol/2);
     connect(nextTurn, &QPushButton::clicked,
@@ -180,6 +201,7 @@ void MainWindow::makeBoardGUI(int noOfRow, int noOfCol)
 
     makeARandomString(amountOfCards);
 
+    //assigning random letter (but in pair) to each buttons
     for(unsigned long long int i=0; i<cardButton_.size(); i++){
         buttonWithLetters.insert({cardButton_.at(i),randomString.at(i)});
     }
@@ -207,6 +229,7 @@ void MainWindow::givePointToPlayerInTurn()
     if(playerInTurn%2==0){
         ++playerTwoPts;
 
+        //keeping track of cards collected
         char collectedCard= buttonWithLetters[openCards.at(0)];
         playerTwoCollection.push_back(collectedCard);
     }
@@ -223,6 +246,7 @@ void MainWindow::closeOpenCards()
 {
     for(auto openCard: openCards){
         if(matchFound){
+            //changing the style and making button disable upon match found
             openCard->setText("X");
             openCard->setStyleSheet("QPushButton { background-color: black; }\n"
                           "QPushButton:enabled { background-color: rgb(0, 128, 128); }\n");
@@ -236,9 +260,11 @@ void MainWindow::closeOpenCards()
 
     }
 
+    // reseting for next turn
     openCards.clear();
     cardsOpen=0;
 
+    //seting match to deafult
     if(matchFound){
         matchFound=false;
     }
@@ -247,10 +273,12 @@ void MainWindow::closeOpenCards()
 // Updataes the player score in the gameStatus area
 void MainWindow::updatePlayerScore()
 {
+    //gets the score
     QString player1=nameOfPlayer[0];
     player1+="'s score stands at ";
     player1+=QString::number(playerOnePts);
 
+    //gets the cards
     QString cardsCollectedP1="cards collected by "+ nameOfPlayer[0]+ " : ";
     for(auto card: playerOneCollection){
         cardsCollectedP1+= QChar::fromLatin1(card);
@@ -267,12 +295,15 @@ void MainWindow::updatePlayerScore()
         cardsCollectedP2+=" ";
     }
 
+    //finds the player in turn
     if(playerInTurn%2==0){
         inTurn= nameOfPlayer[0]+" is in turn";
     }
     else{
          inTurn= nameOfPlayer[1]+" is in turn";
     }
+
+    //display accordingly
     QString textToBeDisplayed= inTurn+ "\n"+ player1+ "\n" + cardsCollectedP1 +
             "\n" + player2 + "\n" +cardsCollectedP2;
 
@@ -283,6 +314,7 @@ void MainWindow::updatePlayerScore()
 // Finds the result of the game and updates it in the gameStatus area
 void MainWindow::announceWinner()
 {
+    //finds the winner
     QString text = ui->gameStatusTextBrowser->toPlainText();
     if(playerOnePts>playerTwoPts){
 
