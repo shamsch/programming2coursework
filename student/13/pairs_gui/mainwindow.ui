@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>434</width>
-    <height>348</height>
+    <width>668</width>
+    <height>447</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <widget class="QLineEdit" name="amountOfCardLineEdit">
     <property name="geometry">
      <rect>
-      <x>280</x>
+      <x>320</x>
       <y>10</y>
       <width>141</width>
       <height>21</height>
@@ -27,7 +27,7 @@
    <widget class="QLineEdit" name="playerNameStringLineEdit">
     <property name="geometry">
      <rect>
-      <x>280</x>
+      <x>320</x>
       <y>50</y>
       <width>141</width>
       <height>24</height>
@@ -57,13 +57,13 @@
      </rect>
     </property>
     <property name="text">
-     <string>Name 2 players (sep by space) and press enter</string>
+     <string>Name 2 players (sep by space)</string>
     </property>
    </widget>
    <widget class="QPushButton" name="startGamePushButton">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>340</x>
       <y>90</y>
       <width>101</width>
       <height>31</height>
@@ -79,7 +79,7 @@
       <x>20</x>
       <y>160</y>
       <width>371</width>
-      <height>151</height>
+      <height>191</height>
      </rect>
     </property>
    </widget>
@@ -102,7 +102,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>434</width>
+     <width>668</width>
      <height>25</height>
     </rect>
    </property>
