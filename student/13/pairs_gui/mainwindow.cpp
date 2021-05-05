@@ -197,9 +197,15 @@ void MainWindow::givePointToPlayerInTurn()
 {
     if(playerInTurn%2==0){
         ++playerTwoPts;
+
+        char collectedCard= buttonWithLetters[openCards.at(0)];
+        playerTwoCollection.push_back(collectedCard);
     }
     else{
         ++playerOnePts;
+
+        char collectedCard= buttonWithLetters[openCards.at(0)];
+        playerOneCollection.push_back(collectedCard);
     }
 }
 
@@ -233,30 +239,48 @@ void MainWindow::updatePlayerScore()
     QString player1=nameOfPlayer[0];
     player1+="'s score stands at ";
     player1+=QString::number(playerOnePts);
+
+    QString cardsCollectedP1="cards collected by "+ nameOfPlayer[0]+ " : ";
+    for(auto card: playerOneCollection){
+        cardsCollectedP1+= QChar::fromLatin1(card);
+        cardsCollectedP1+=" ";
+    }
+
     QString player2=nameOfPlayer[1];
     player2+="'s score stands at ";
     player2+=QString::number(playerTwoPts);
+
+    QString cardsCollectedP2="cards collected by "+ nameOfPlayer[1]+ " : ";
+    for(auto card: playerTwoCollection){
+        cardsCollectedP2+= QChar::fromLatin1(card);
+        cardsCollectedP2+=" ";
+    }
+
     if(playerInTurn%2==0){
         inTurn= nameOfPlayer[0]+" is in turn";
     }
     else{
          inTurn= nameOfPlayer[1]+" is in turn";
     }
-    QString textToBeDisplayed= inTurn+ "\n"+ player1+ "\n" + player2;
+    QString textToBeDisplayed= inTurn+ "\n"+ player1+ "\n" + cardsCollectedP1 +
+            "\n" + player2 + "\n" +cardsCollectedP2;
+
     ui->gameStatusTextBrowser->setText(textToBeDisplayed);
 
 }
 
 void MainWindow::announceWinner()
 {
+    QString text = ui->gameStatusTextBrowser->toPlainText();
     if(playerOnePts>playerTwoPts){
-        ui->gameStatusTextBrowser->setText("Congrats, "+ nameOfPlayer[0] + "! You have won.");
+
+        ui->gameStatusTextBrowser->setText(text+"\nCongrats, "+ nameOfPlayer[0] + "! You have won.");
     }
     else if(playerTwoPts>playerOnePts){
-        ui->gameStatusTextBrowser->setText("Congrats, "+ nameOfPlayer[1] + "! You have won.");
+        ui->gameStatusTextBrowser->setText(text+"\nCongrats, "+ nameOfPlayer[1] + "! You have won.");
     }
     else{
-        ui->gameStatusTextBrowser->setText("It's a draw, bois! :))");
+        ui->gameStatusTextBrowser->setText(text+"\nIt's a draw, bois! :))");
     }
 }
 

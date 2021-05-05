@@ -48,6 +48,9 @@ private:
     int playerTwoPts=0;
     int cardsLeftToPlay;
 
+    std::vector<char> playerOneCollection;
+    std::vector<char> playerTwoCollection;
+
     QStringList nameOfPlayer;
     QString inTurn="";
 
