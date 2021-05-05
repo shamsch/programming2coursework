@@ -1,10 +1,7 @@
 #include "mainwindow.hh"
 #include "ui_mainwindow.h"
 #include "dialog.hh"
-#include <QHBoxLayout>
-#include <QPoint>
-#include <QCursor>
-#include <QGraphicsView>
+#include <QGridLayout>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -25,7 +22,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_amountOfCardLineEdit_editingFinished()
 {
     amountOfCards= ui->amountOfCardLineEdit->text().toInt();
-    qDebug() << amountOfCards;
+    // qDebug() << amountOfCards;
 }
 
 
@@ -33,10 +30,10 @@ void MainWindow::on_playerNameStringLineEdit_editingFinished()
 {
     QString allPlayerString= ui->playerNameStringLineEdit->text();
     nameOfPlayer= allPlayerString.split(QString(" "));
-    qDebug() << nameOfPlayer;
+    // qDebug() << nameOfPlayer;
 }
 
-
+// This method checks if the pre-game data is valid or not
 void MainWindow::validateData()
 {
     if(amountOfCards%2==0 && amountOfCards!=0){
@@ -57,6 +54,7 @@ void MainWindow::validateData()
     }
 }
 
+// This method essentially make a string with N (cards) number of letter and randomly suffles them
 void MainWindow::makeARandomString(int n)
 {
     char starter='A';
@@ -67,11 +65,13 @@ void MainWindow::makeARandomString(int n)
     std::random_shuffle(randomString.begin(),randomString.end());
 }
 
+// This method triggers the game
 void MainWindow::on_startGamePushButton_clicked()
 {
     validateData();
 }
 
+// This method checks which card is pressed
 void MainWindow::cardClicked()
 {
     if(cardsOpen<2){
@@ -97,10 +97,13 @@ void MainWindow::cardClicked()
     }
 }
 
+// This method moves the game forwards by giving the next player the turn
+
 void MainWindow::nextTurnClicked()
 {
     if(cardsOpen==2 && cardsLeftToPlay>0){
-        if(buttonWithLetters[openCards.at(0)]==buttonWithLetters[openCards.at(1)]){
+        if(buttonWithLetters[openCards.at(0)]
+                ==buttonWithLetters[openCards.at(1)]){
             matchFound=true;
             cardsLeftToPlay=cardsLeftToPlay-2;
             givePointToPlayerInTurn();
@@ -117,6 +120,7 @@ void MainWindow::nextTurnClicked()
     }
 }
 
+// This method resets the game and sets all value to default
 void MainWindow::restartGameClicked()
 {
     gameBoard->accept();
@@ -134,8 +138,11 @@ void MainWindow::restartGameClicked()
     buttonWithLetters.clear();
     cardButton_.clear();
     openCards.clear();
+    playerOneCollection.clear();
+    playerTwoCollection.clear();
 }
 
+//This method creates the dialog window of the cards namely gameboard
 void MainWindow::makeBoardGUI(int noOfRow, int noOfCol)
 {
 
@@ -180,6 +187,7 @@ void MainWindow::makeBoardGUI(int noOfRow, int noOfCol)
 
 }
 
+// Calculates the closest factor for row and colum, number being the number of cards
 void MainWindow::findRowAndCol(int number, int &row, int &col)
 {
 
@@ -193,6 +201,7 @@ void MainWindow::findRowAndCol(int number, int &row, int &col)
     col = number / row;
 }
 
+// Gives point to the player who has found a match
 void MainWindow::givePointToPlayerInTurn()
 {
     if(playerInTurn%2==0){
@@ -209,6 +218,7 @@ void MainWindow::givePointToPlayerInTurn()
     }
 }
 
+// Closes open card and changes styles if match found
 void MainWindow::closeOpenCards()
 {
     for(auto openCard: openCards){
@@ -234,6 +244,7 @@ void MainWindow::closeOpenCards()
     }
 }
 
+// Updataes the player score in the gameStatus area
 void MainWindow::updatePlayerScore()
 {
     QString player1=nameOfPlayer[0];
@@ -269,15 +280,16 @@ void MainWindow::updatePlayerScore()
 
 }
 
+// Finds the result of the game and updates it in the gameStatus area
 void MainWindow::announceWinner()
 {
     QString text = ui->gameStatusTextBrowser->toPlainText();
     if(playerOnePts>playerTwoPts){
 
-        ui->gameStatusTextBrowser->setText(text+"\nCongrats, "+ nameOfPlayer[0] + "! You have won.");
+        ui->gameStatusTextBrowser->setText(text+"\nCONGRATS, "+ nameOfPlayer[0] + "! You have won.");
     }
     else if(playerTwoPts>playerOnePts){
-        ui->gameStatusTextBrowser->setText(text+"\nCongrats, "+ nameOfPlayer[1] + "! You have won.");
+        ui->gameStatusTextBrowser->setText(text+"\nCONGRATS, "+ nameOfPlayer[1] + "! You have won.");
     }
     else{
         ui->gameStatusTextBrowser->setText(text+"\nIt's a draw, bois! :))");

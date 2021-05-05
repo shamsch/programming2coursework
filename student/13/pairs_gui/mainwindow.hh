@@ -1,6 +1,12 @@
 #ifndef MAINWINDOW_HH
 #define MAINWINDOW_HH
 
+//Author
+// * Name: Shamsur Raza Chowdhury
+// * Student number: 050359798
+// * UserID: rvshch
+// * E-Mail: shamsurraza.chowdhury@tuni.fi
+
 #include <QMainWindow>
 #include <QDebug>
 #include <vector>

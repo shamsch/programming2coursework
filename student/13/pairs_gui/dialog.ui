@@ -31,6 +31,19 @@
   <property name="windowTitle">
    <string>Game Board</string>
   </property>
+  <widget class="QLabel" name="messageLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>390</y>
+     <width>561</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Press two cards and then press NEXT TURN</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
