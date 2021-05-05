@@ -3,6 +3,7 @@
 #include "dialog.hh"
 #include <QGridLayout>
 #include <QDebug>
+#include <QElapsedTimer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -11,6 +12,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     this->setWindowTitle("Pairs game by Shamsur");
+
+    //connecting all the buttons and lineEdits from UI
+
+    connect(ui->amountOfCardLineEdit, &QLineEdit::editingFinished, this,
+            &MainWindow::onAmountOfCardLineEditEditingFinished);
+
+    connect(ui->playerNameStringLineEdit, &QLineEdit::editingFinished, this,
+            &MainWindow::onPlayerNameStringLineEditEditingFinished);
+
+    connect(ui->startGamePushButton, &QPushButton::clicked, this,
+            &MainWindow::onStartGamePushButtonClicked);
 }
 
 MainWindow::~MainWindow()
@@ -18,15 +30,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// slot methods
 
-void MainWindow::on_amountOfCardLineEdit_editingFinished()
+void MainWindow::onAmountOfCardLineEditEditingFinished()
 {
     amountOfCards= ui->amountOfCardLineEdit->text().toInt();
-    // qDebug() << amountOfCards;
 }
 
 
-void MainWindow::on_playerNameStringLineEdit_editingFinished()
+void MainWindow::onPlayerNameStringLineEditEditingFinished()
 {
     QString allPlayerString= ui->playerNameStringLineEdit->text();
     nameOfPlayer= allPlayerString.split(QString(" "));
@@ -43,6 +55,9 @@ void MainWindow::validateData()
             //disabling the button after game start
 
             ui->startGamePushButton->setEnabled(false);
+
+            //gets the clock ticking
+            myTimer.start();
 
             ui->gameStatusTextBrowser->setText(nameOfPlayer[0]+" is in turn");
 
@@ -75,7 +90,7 @@ void MainWindow::makeARandomString(int n)
 }
 
 // This method triggers the game
-void MainWindow::on_startGamePushButton_clicked()
+void MainWindow::onStartGamePushButtonClicked()
 {
     validateData();
 }
@@ -295,6 +310,11 @@ void MainWindow::updatePlayerScore()
         cardsCollectedP2+=" ";
     }
 
+    //calculate the time in seconds
+    double timeInSec= myTimer.elapsed()/1000;
+    QString time= "Time elapsed (in seconds) since starting the game: ";
+    time+= QString::number(timeInSec);
+
     //finds the player in turn
     if(playerInTurn%2==0){
         inTurn= nameOfPlayer[0]+" is in turn";
@@ -305,7 +325,7 @@ void MainWindow::updatePlayerScore()
 
     //display accordingly
     QString textToBeDisplayed= inTurn+ "\n"+ player1+ "\n" + cardsCollectedP1 +
-            "\n" + player2 + "\n" +cardsCollectedP2;
+            "\n" + player2 + "\n" +cardsCollectedP2 + "\n" + time;
 
     ui->gameStatusTextBrowser->setText(textToBeDisplayed);
 

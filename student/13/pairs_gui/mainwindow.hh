@@ -15,6 +15,7 @@
 #include <string>
 #include <algorithm>
 #include <map>
+#include <QElapsedTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,11 +30,12 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_amountOfCardLineEdit_editingFinished();
 
-    void on_playerNameStringLineEdit_editingFinished();
+    void onAmountOfCardLineEditEditingFinished();
 
-    void on_startGamePushButton_clicked();
+    void onPlayerNameStringLineEditEditingFinished();
+
+    void onStartGamePushButtonClicked();
 
     void cardClicked();
 
@@ -53,6 +55,8 @@ private:
     int playerOnePts=0;
     int playerTwoPts=0;
     int cardsLeftToPlay;
+
+    QElapsedTimer myTimer;
 
     std::vector<char> playerOneCollection;
     std::vector<char> playerTwoCollection;
@@ -75,11 +79,13 @@ private:
     void findRowAndCol(int number, int &row, int &col);
 
     void givePointToPlayerInTurn();
+
     void closeOpenCards();
+
     void updatePlayerScore();
+
     void announceWinner();
 
-    bool gameStarted=false;
     bool matchFound= false;
 };
 #endif // MAINWINDOW_HH
