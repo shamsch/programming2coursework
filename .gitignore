@@ -8,3 +8,4 @@ examples/*
 *tempCodeRunnerFile.cpp
 *.txt
 !data.txt
+!instructions.txt

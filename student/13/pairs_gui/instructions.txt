@@ -1,0 +1,10 @@
+Hello. This is the instruction for how to use this game.  First you have to enter the number of cards. It must be a even number.
+Anything other than an even number will prompt error in game status area. Then you must enter two names, separated by a space, and
+press enter. The name can be anything. Even if it's something like, XÆA-Xii, as long as it's one non-space word. There must be two
+names. Else, the game will not start. Once you start the game, there will be a new dialog window. You have to press two cards and
+then press next turn. If your turn resulted in a match, you will get points. All of that can be seen in the main window status
+bar area. You will also be able to see who is in turn. You can also see which cards one has collected. If you feel like restarting
+you are free to do so at any point in the game. Cards which has been played aka part of match, will be disabled.
+Once all cards are played, it will be empty board, and you can't press next turn.
+You can either restart the game or close the window or idk throw your computer out of the window. That is pretty much all you need
+to know to play this game. Hope you enjoy it!
