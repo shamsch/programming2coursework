@@ -33,13 +33,13 @@ private slots:
 
     void nextTurnClicked();
 
+    void restartGameClicked();
+
 private:
     Ui::MainWindow *ui;
     Dialog *gameBoard;
 
     int amountOfCards=0;
-    int seedValue =0;
-    int numberOfPlayers=0;
     int row=0;
     int col=0;
     int cardsOpen=0;

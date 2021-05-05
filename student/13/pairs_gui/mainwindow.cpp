@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    this->setWindowTitle("Pairs game by Shamsur");
 }
 
 MainWindow::~MainWindow()
@@ -58,7 +59,7 @@ void MainWindow::validateData()
 
 void MainWindow::makeARandomString(int n)
 {
-    char starter='a';
+    char starter='A';
     for(int i=0; i<n/2;i++){
         randomString+= (starter+i);
         randomString+= (starter+i);
@@ -81,13 +82,18 @@ void MainWindow::cardClicked()
          {
              if(cardButton_.at(i)==button)
              {
-                 QString text;
-                 text= buttonWithLetters[cardButton_.at(i)];
-                 button->setText(text);
+                 QString alphabet;
+                 alphabet= buttonWithLetters[cardButton_.at(i)];
+                 button->setText(alphabet);
              }
          }
-         openCards.push_back(button);
-         cardsOpen++;
+
+         if (std::find(openCards.begin(), openCards.end(), button)
+                 == openCards.end()) {
+             openCards.push_back(button);
+             cardsOpen++;
+         }
+
     }
 }
 
@@ -109,6 +115,25 @@ void MainWindow::nextTurnClicked()
         button->setEnabled(false);
         announceWinner();
     }
+}
+
+void MainWindow::restartGameClicked()
+{
+    gameBoard->accept();
+    ui->amountOfCardLineEdit->setText("");
+    ui->playerNameStringLineEdit->setText("");
+    ui->startGamePushButton->setEnabled(true);
+    ui->gameStatusTextBrowser->setText("");
+    ui->startGamePushButton->setText("Play again");
+    cardsOpen=0;
+    playerInTurn=1;
+    playerOnePts=0;
+    playerTwoPts=0;
+    cardsOpen=0;
+    randomString="";
+    buttonWithLetters.clear();
+    cardButton_.clear();
+    openCards.clear();
 }
 
 void MainWindow::makeBoardGUI(int noOfRow, int noOfCol)
@@ -133,12 +158,21 @@ void MainWindow::makeBoardGUI(int noOfRow, int noOfCol)
                     this, &MainWindow::cardClicked);
         }
     }
+
+
     QPushButton *nextTurn= new QPushButton("Next turn", this);
     layout->addWidget(nextTurn, noOfRow, noOfCol/2);
     connect(nextTurn, &QPushButton::clicked,
             this, &MainWindow::nextTurnClicked);
+
+    QPushButton *restartGame= new QPushButton("Restart?", this);
+    layout->addWidget(restartGame, noOfRow+1, noOfCol/2);
+    connect(restartGame, &QPushButton::clicked, this, &MainWindow::restartGameClicked);
+
     gameBoard->show();
+
     makeARandomString(amountOfCards);
+
     for(unsigned long long int i=0; i<cardButton_.size(); i++){
         buttonWithLetters.insert({cardButton_.at(i),randomString.at(i)});
     }
@@ -173,7 +207,7 @@ void MainWindow::closeOpenCards()
 {
     for(auto openCard: openCards){
         if(matchFound){
-            openCard->setText(":)");
+            openCard->setText("X");
             openCard->setStyleSheet("QPushButton { background-color: black; }\n"
                           "QPushButton:enabled { background-color: rgb(0, 128, 128); }\n");
             openCard->setEnabled(false);

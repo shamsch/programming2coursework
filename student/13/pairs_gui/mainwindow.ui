@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>434</width>
-    <height>483</height>
+    <height>348</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,29 +44,29 @@
      </rect>
     </property>
     <property name="text">
-     <string>Enter the amount of cards (an even number):</string>
+     <string>Enter the amount of cards (an even number)</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>50</y>
-      <width>301</width>
-      <height>20</height>
+      <y>40</y>
+      <width>271</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>Name of 2 players (separated by space):</string>
+     <string>Name 2 players (sep by space) and press enter</string>
     </property>
    </widget>
    <widget class="QPushButton" name="startGamePushButton">
     <property name="geometry">
      <rect>
-      <x>300</x>
-      <y>100</y>
-      <width>91</width>
-      <height>25</height>
+      <x>290</x>
+      <y>90</y>
+      <width>101</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -78,8 +78,8 @@
      <rect>
       <x>20</x>
       <y>160</y>
-      <width>251</width>
-      <height>271</height>
+      <width>371</width>
+      <height>151</height>
      </rect>
     </property>
    </widget>
