@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>489</width>
+    <width>513</width>
     <height>447</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>320</x>
       <y>10</y>
-      <width>141</width>
+      <width>171</width>
       <height>21</height>
      </rect>
     </property>
@@ -29,7 +29,7 @@
      <rect>
       <x>320</x>
       <y>50</y>
-      <width>141</width>
+      <width>171</width>
       <height>24</height>
      </rect>
     </property>
@@ -63,7 +63,7 @@
    <widget class="QPushButton" name="startGamePushButton">
     <property name="geometry">
      <rect>
-      <x>340</x>
+      <x>360</x>
       <y>90</y>
       <width>101</width>
       <height>31</height>
@@ -78,8 +78,8 @@
      <rect>
       <x>20</x>
       <y>160</y>
-      <width>371</width>
-      <height>191</height>
+      <width>271</width>
+      <height>231</height>
      </rect>
     </property>
    </widget>
@@ -96,13 +96,36 @@
      <string>GAME STATUS:</string>
     </property>
    </widget>
+   <widget class="QTextBrowser" name="gameHistoryTextBrowser">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>161</y>
+      <width>181</width>
+      <height>231</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="historyLabel">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>130</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>HISTORY:</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>489</width>
+     <width>513</width>
      <height>25</height>
     </rect>
    </property>

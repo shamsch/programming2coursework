@@ -4,6 +4,8 @@
 #include <QGridLayout>
 #include <QDebug>
 #include <QElapsedTimer>
+#include <QTextStream>
+#include <QFile>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -346,5 +348,32 @@ void MainWindow::announceWinner()
     else{
         ui->gameStatusTextBrowser->setText(text+"\nIt's a draw, bois! :))");
     }
+    saveGameData();
+    displayGameHistory();
+}
+
+//This method saves the record of game in a .txt file in the build dir
+void MainWindow::saveGameData()
+{
+    QFile file("history.txt");
+    if (file.open(QFile::ReadWrite| QFile::Text | QFile::Append)) {
+           QTextStream stream(&file);
+           QString gameRecord= nameOfPlayer[0] + " "+ QString::number(playerOnePts)
+                   + " pts & "+ nameOfPlayer[1] + " "+ QString::number(playerTwoPts) + " pts\n";
+           stream << gameRecord;
+           file.close();
+    }
+}
+
+//This method displays the game record from the .txt file in the histroy area
+void MainWindow::displayGameHistory()
+{
+    QFile file("history.txt");
+    if ((file.open(QFile::ReadWrite| QFile::Text))) {
+           QTextStream stream(&file);
+           ui->gameHistoryTextBrowser->setText(stream.readAll());
+           file.close();
+    }
+
 }
 

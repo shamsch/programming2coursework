@@ -7,4 +7,7 @@ bar area. You will also be able to see who is in turn. You can also see which ca
 you are free to do so at any point in the game. Cards which has been played aka part of match, will be disabled.
 Once all cards are played, it will be empty board, and you can't press next turn.
 You can either restart the game or close the window or idk throw your computer out of the window. That is pretty much all you need
-to know to play this game. Hope you enjoy it!
+to know to play this game. This game also keeps track of time in second and updates it
+as you change the turn and also at the end of the game. This game can also show you a
+history of the previous game with each player name and their score. This area can get populated as you play the game.
+Hope you enjoy it!

@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <map>
 #include <QElapsedTimer>
+#include <QFile>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -58,11 +59,14 @@ private:
 
     QElapsedTimer myTimer;
 
+
     std::vector<char> playerOneCollection;
     std::vector<char> playerTwoCollection;
 
     QStringList nameOfPlayer;
     QString inTurn="";
+    QString fileName="history.txt";
+
 
     std::string randomString="";
 
@@ -85,6 +89,10 @@ private:
     void updatePlayerScore();
 
     void announceWinner();
+
+    void saveGameData();
+
+    void displayGameHistory();
 
     bool matchFound= false;
 };
